@@ -42,4 +42,5 @@ export default class KeyHandler {
 
 }
 
+//TODO: add swipes
 //TODO: на keyUp ускорять анимацию чтобы плавно было усе
