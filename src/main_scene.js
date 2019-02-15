@@ -1,3 +1,5 @@
+import FieldManager from "./FieldManager.js";
+
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super("MainScene");
@@ -7,8 +9,8 @@ export default class MainScene extends Phaser.Scene {
         this.load.image('field',"assets/field.png");
 	}
 	create() {
-        let field = this.add.image(250,250,'field');
-        ball = this.add.image(65, 68, 'tile');
+        
+        var fieldManager = new FieldManager(this);
     }
 	//update() {}
 }
