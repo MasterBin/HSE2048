@@ -1,4 +1,5 @@
 import FieldManager from "./FieldManager.js";
+import KeyHandler from "./KeyHandler.js";
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -11,6 +12,7 @@ export default class MainScene extends Phaser.Scene {
 	create() {
         
         var fieldManager = new FieldManager(this);
+        var keyHandler = new KeyHandler(this);
     }
 	//update() {}
 }

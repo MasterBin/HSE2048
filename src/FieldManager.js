@@ -3,6 +3,7 @@ export default class FieldManager {
 
     constructor (game) {
 
+        this.game = game;
         this.field = game.add.image(250,250,'field');
         this.array = [];
         this.group = game.add.group();
@@ -11,12 +12,13 @@ export default class FieldManager {
 
             this.array[i] = [];
             for (let j = 0; j < 4; ++j) {
-                let tile = game.add.image(_tilePosition(j),_tilePosition(i), 'tile');
-                tile.alpha = 0;
-                tile.visible = 0;
+
+                let tile = game.add.image(this._tilePosition(j),this._tilePosition(i), 'tile');
+                tile.alpha = 1;// TODO 0
+                tile.visible = 1; // TODO 0 
                 
-                group.add(two);
-                array[i][j] = {
+                this.group.add(tile);
+                this.array[i][j] = {
 
                     num: 0
                     //TODO
@@ -25,9 +27,7 @@ export default class FieldManager {
         }
     }
     
-    
-
     _tilePosition(pos) {
-        return 10;
+        return 25;
     }
 }
