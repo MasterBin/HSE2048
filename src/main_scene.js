@@ -12,8 +12,11 @@ export default class MainScene extends Phaser.Scene {
 	create() {
         
         var fieldManager = new FieldManager(this);
-        var keyHandler = new KeyHandler(this);
+        var keyHandler = new KeyHandler(this, this.moveHandler);
+    }
+
+    moveHandler (x, y) {
+        console.log(x+ " " +y );
     }
 	//update() {}
 }
-let ball;

@@ -1,7 +1,12 @@
+
+// represents onMoved event with two args: "x" and "y" 
 export default class KeyHandler {
 
-    constructor (game) {
+    constructor (game, handler) {
+        this.game = game;
         game.input.keyboard.on("keydown", this.onKeyPressed, this);
+        this.handler = handler;
+        game.events.on("onMoved", handler, this);
     }
 
     onKeyPressed (key) {
@@ -9,22 +14,22 @@ export default class KeyHandler {
         switch (key.code) {
             case "KeyW":
             case "ArrowUp":
-                console.log("up");
+                this.game.events.emit("onMoved", 0, 1);
                 break;
 
             case "KeyA":
             case "ArrowLeft":
-                console.log("left");
+                this.game.events.emit("onMoved", -1, 0);
                 break;
 
             case "KeyS":
             case "ArrowDown":
-                console.log("down");
+                this.game.events.emit("onMoved", 0, -1);
                 break;
 
             case "KeyD":
             case "ArrowRight":
-                console.log("right");
+                this.game.events.emit("onMoved", 0, 1);
                 break;
         }
     }
