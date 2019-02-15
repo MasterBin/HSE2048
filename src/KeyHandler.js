@@ -29,7 +29,7 @@ export default class KeyHandler {
 
             case "KeyD":
             case "ArrowRight":
-                this.game.events.emit("onMoved", 0, 1);
+                this.game.events.emit("onMoved", 1, 0);
                 break;
         }
     }
