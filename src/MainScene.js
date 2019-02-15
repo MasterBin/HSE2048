@@ -12,6 +12,7 @@ export default class MainScene extends Phaser.Scene {
     constructor() {
         super("MainScene");
 
+
         this._moveHandler = (x, y) => {
             this.tile.x += (sceneConfig.tileSize+sceneConfig.spacingHorizontal) * ((x < 0)? -1: ((x == 0)? 0 : 1));
             this.tile.y -= (sceneConfig.tileSize+sceneConfig.spacingVertical) * ((y < 0)? -1: ((y == 0)? 0 : 1));
