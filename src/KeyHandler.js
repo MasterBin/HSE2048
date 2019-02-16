@@ -13,7 +13,7 @@ export default class KeyHandler {
         switch (key.code) {
             case "KeyW":
             case "ArrowUp":
-                this.game.events.emit("onMoved", 0, 1);
+                this.game.events.emit("onMoved", 0, -1);
                 break;
 
             case "KeyA":
@@ -23,7 +23,7 @@ export default class KeyHandler {
 
             case "KeyS":
             case "ArrowDown":
-                this.game.events.emit("onMoved", 0, -1);
+                this.game.events.emit("onMoved", 0, 1);
                 break;
 
             case "KeyD":

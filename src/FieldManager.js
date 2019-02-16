@@ -13,18 +13,23 @@ export default class FieldManager {
 
     //TODO delete
     _reload() {
-        
+        for (let i = 0; i < 4; ++i){
+            for (let j = 0; j < 4; ++j) {
+                this.array[i][j].increased = false;
+            }
+        }
     }
 
     moveHandler(x,y) {
         let somethingMoved = false;
-        for (let i = 0; i < 4; ++i)
+        for (let i = 0; i < 4; ++i){
             for (let j = 0; j < 4; ++j) {
                 
                 // начнем с конца
                 let curRow = ( y == 1 )? 3 - i : i;
                 let curCol = ( x == 1 )? 3 - j : j;
-                let current = this.array[curCol][curRow];
+                let current = this.array[curRow][curCol];
+
 
                 if (current.num == 0)
                     continue;
@@ -32,26 +37,26 @@ export default class FieldManager {
                 let shiftRow = y;
                 let shiftCol = x;
 
-                while (this._fitToField(curCol+shiftCol, curRow+ shiftRow) &&
-                            this.array[curCol+shiftCol][curRow+ shiftRow].num == 0) {
+                while (this._fitToField(curCol + shiftCol, curRow + shiftRow) &&
+                            this.array[curRow + shiftRow][curCol + shiftCol].num == 0) {
                     
                     shiftCol += x;
                     shiftRow += y;
                 }
 
                 if (this._fitToField(curCol + shiftCol, curRow + shiftRow) &&
-                        this.array[curCol + shiftCol][curRow + shiftRow].num == current.num &&
-                        this.array[curCol + shiftCol][curRow + shiftRow].increased == false) {
+                        this.array[curRow + shiftRow][curCol + shiftCol].num == current.num &&
+                        this.array[curRow + shiftRow][curCol + shiftCol].increased == false) {
                     
-                    this.array[curCol][curRow].num = 0;
+                    this.array[curRow][curCol].num = 0;
                     //TODO: delete
-                    this.array[curCol][curRow].text.setText('0');
+                    this.array[curRow][curCol].text.setText('');
 
-                    this.array[curCol + shiftCol][curRow + shiftRow].num += 2;
+                    this.array[curRow + shiftRow][curCol + shiftCol].num *= 2;
                     //TODO: delete
-                    this.array[curCol][curRow].text.setText(JSON.stringify(this.array[curCol + shiftCol][curRow + shiftRow].num));
+                    this.array[curRow + shiftRow][curCol + shiftCol].text.setText(JSON.stringify(this.array[curRow + shiftRow][curCol + shiftCol].num));
 
-                    this.array[curCol + shiftCol][curRow + shiftRow].increased = true;
+                    this.array[curRow + shiftRow][curCol + shiftCol].increased = true;
                     somethingMoved = true;
                 }
                 else {
@@ -59,14 +64,16 @@ export default class FieldManager {
                     shiftCol -= x;
                     shiftRow -= y;
                     if (shiftCol != 0 || shiftRow != 0) {
-                        this.array[curCol+shiftCol][curRow+shiftRow].num = current.num;
-                        this.array[curCol][curRow].num = 0;
+                        this.array[curRow + shiftRow][curCol + shiftCol].num = current.num;
+                        this.array[curRow + shiftRow][curCol + shiftCol].text.setText(JSON.stringify(current.num));
+                        this.array[curRow][curCol].num = 0;
                         //TODO: delete
-                        this.array[curCol][curRow].text.setText('0');
+                        this.array[curRow][curCol].text.setText('');
                         
                         somethingMoved = true;
                     }
                 }
+            }
         }
 
         if (somethingMoved)
@@ -96,7 +103,7 @@ export default class FieldManager {
         newTile.num = 2;
         //TODO: delete
         newTile.text.setText('2');
-        newTile.sprite.visible = true;
+        //newTile.sprite.visible = true;
     }
     
     _tilePosition(pos) {
@@ -110,7 +117,11 @@ export default class FieldManager {
             for (let j = 0; j < 4; ++j) {
                 let tile = this.game.add.sprite(this._tilePosition(j),this._tilePosition(i), 'tile');
                 //TODO: delete
-                let text = this.game.add.text(this._tilePosition(j),this._tilePosition(i), '0')
+                let text = this.game.add.text(this._tilePosition(j) - 20,this._tilePosition(i) - 20, '', {
+                    font: "bold 64px Arial",
+                    align: "center",
+                    color: "black",
+                })
                 tile.alpha = 0.5;// TODO 0
                 tile.visible = 0; // TODO 0
                 this.group.add(tile);
