@@ -1,4 +1,5 @@
 import MainScene from './MainScene.js';
+import PreloadScene from './PreloadScene.js';
 
 const config = {
     width: 500,
@@ -6,7 +7,7 @@ const config = {
     type: Phaser.AUTO,
     backgroundColor: 0x000000,
     physics: Phaser.ARCADE,
-    scene: MainScene
+    scene: [ PreloadScene, MainScene ]
 };
 
 function resize() {

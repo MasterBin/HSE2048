@@ -2,11 +2,10 @@
 // represents onMoved event with two args: "x" and "y" 
 export default class KeyHandler {
 
-    constructor (game, handler) {
+    constructor (game, fieldManager) {
         this.game = game;
         game.input.keyboard.on("keydown", this.onKeyPressed, this);
-        this.handler = handler;
-        game.events.on("onMoved", handler, this);
+        game.events.on("onMoved", fieldManager.moveHandler, fieldManager);
     }
 
     onKeyPressed (key) {
