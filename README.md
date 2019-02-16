@@ -15,7 +15,7 @@ $ cd serv/
 ```
 Run it using Node.js
 ```sh
-$ node initialization.js
+$ node server.js
 ```
 Then, go to your browser and type this adress
 ```
