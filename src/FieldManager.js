@@ -49,12 +49,8 @@ export default class FieldManager {
                         this.array[curRow + shiftRow][curCol + shiftCol].increased == false) {
                     
                     this.array[curRow][curCol].num = 0;
-                    //TODO: delete
-                    this.array[curRow][curCol].text.setText('');
 
-                    this.array[curRow + shiftRow][curCol + shiftCol].num *= 2;
-                    //TODO: delete
-                    this.array[curRow + shiftRow][curCol + shiftCol].text.setText(JSON.stringify(this.array[curRow + shiftRow][curCol + shiftCol].num));
+                    this.array[curRow + shiftRow][curCol + shiftCol].num += 1;
 
                     this.array[curRow + shiftRow][curCol + shiftCol].increased = true;
                     somethingMoved = true;
@@ -65,10 +61,7 @@ export default class FieldManager {
                     shiftRow -= y;
                     if (shiftCol != 0 || shiftRow != 0) {
                         this.array[curRow + shiftRow][curCol + shiftCol].num = current.num;
-                        this.array[curRow + shiftRow][curCol + shiftCol].text.setText(JSON.stringify(current.num));
                         this.array[curRow][curCol].num = 0;
-                        //TODO: delete
-                        this.array[curRow][curCol].text.setText('');
                         
                         somethingMoved = true;
                     }
@@ -100,10 +93,9 @@ export default class FieldManager {
         }
         let newTileIndex = Phaser.Utils.Array.GetRandom(emptyTiles);
         let newTile = this.array[newTileIndex.row][newTileIndex.col];
-        newTile.num = 2;
-        //TODO: delete
-        newTile.text.setText('2');
-        //newTile.sprite.visible = true;
+        newTile.num = 1;
+        newTile.sprite.visible = true;
+        newTile.sprite.setFrame(0)
     }
     
     _tilePosition(pos) {
@@ -115,22 +107,14 @@ export default class FieldManager {
         for (let i = 0; i < 4; ++i) {
             this.array[i] = [];
             for (let j = 0; j < 4; ++j) {
-                let tile = this.game.add.sprite(this._tilePosition(j),this._tilePosition(i), 'tile');
-                //TODO: delete
-                let text = this.game.add.text(this._tilePosition(j) - 20,this._tilePosition(i) - 20, '', {
-                    font: "bold 64px Arial",
-                    align: "center",
-                    color: "black",
-                })
-                tile.alpha = 0.5;// TODO 0
-                tile.visible = 0; // TODO 0
+                let tile = this.game.add.sprite(this._tilePosition(j),this._tilePosition(i), 'tiles');
+                tile.alpha = 0.5; // TODO 0 and after appearance become 1
+                tile.visible = false;
                 this.group.add(tile);
                 this.array[i][j] = {
                     sprite: tile,
                     num: 0,
                     increased: false,
-                    //TODO: delete
-                    text: text
                 };
             }
         }
