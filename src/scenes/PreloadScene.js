@@ -7,6 +7,7 @@ export default class PreloadScene extends Phaser.Scene {
 
 	preload() {
         this.load.image('field','assets/field.png');
+        this.load.image('rating','assets/rating_background.png');
         this.load.spritesheet("tiles", "assets/tiles.png", {
             frameWidth: 115,
             frameHeight: 115
@@ -14,6 +15,6 @@ export default class PreloadScene extends Phaser.Scene {
     }
     
 	create() {
-        this.scene.start('MainScene', MainScene);
+        this.scene.start('MainScene');
     }
 }
