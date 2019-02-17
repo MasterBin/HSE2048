@@ -1,6 +1,5 @@
 import MainScene from "./MainScene.js";
 
-
 export default class PreloadScene extends Phaser.Scene {
     constructor() {
         super("PreloadScene");
@@ -18,9 +17,4 @@ export default class PreloadScene extends Phaser.Scene {
 	create() {
         this.scene.start('MainScene', MainScene);
     }
-    
-    //update() {}
-        
 }
-
-let tile;
