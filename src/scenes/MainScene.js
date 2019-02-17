@@ -23,10 +23,8 @@ export default class MainScene extends Phaser.Scene {
         this.fieldManager.addNewTile();
         this.fieldManager.addNewTile();
 
-        new BackEnd();
-    }
-    //update() {}
-        
+        //TODO:
+        let be = new BackEnd();
+        be.reciveRaiting();
+    }   
 }
-
-let tile;

@@ -1,28 +1,51 @@
 
 export default class BackEnd {
-    
-    constructor () {
-        this.xhr = new XMLHttpRequest();
-        
-        this.xhr.onreadystatechange = () => {
-            if (this.xhr.readyState == 3) {
-                // loading
+    constructor() {
+        this.xhrGET = new XMLHttpRequest();
+        this.xhrPUT = new XMLHttpRequest();
+
+        this.xhrGET.onreadystatechange = () => {
+
+            if (this.xhrGET.readyState == 3) {
+                // TODO: loading
             }
-            else if (this.xhr.readyState == 4) {
-                console.log(JSON.parse(this.xhr.responseText));
+            else if (this.xhrGET.readyState == 4) {
+                if (this.xhrGET.status == 200) {
+                    //TODO
+                    console.log(JSON.parse(this.xhrGET.responseText));
+                }
+                else if (this.xhrGET.status == 400) {
+                    console.log(this.xhrGET.responseText);
+                }
             }
         }
 
-        this.xhr.open('get', 'http://localhost:8000/rating', true);
-        this.xhr.send();
+        this.xhrPUT.onreadystatechange = () => {
+
+            if (this.xhrPUT.readyState == 4) {
+                if (this.xhrPUT.status == 200) {
+                    console.log("|__ADDED_TO_RATING_TABLE__|");
+                }
+                else if (this.xhrPUT.status == 400) {
+                    console.log(this.xhrPUT.responseText);
+                }
+            }
+        }
     }
 
-    sendResults () {
-        
+    sendResult(result) {
+        if (this.xhrPUT.readyState == 0) {
+            this.xhrPUT.open('put', 'http://localhost:8000/rating');
+            this.xhrPUT.setRequestHeader("Content-Type", "application/json");
+            this.xhrPUT.send(JSON.stringify(result));
+        }
     }
 
-    reciveRaiting () {
-        
+    reciveRaiting() {
+        if (this.xhrGET.readyState == 0) {
+            this.xhrGET.open('get', 'http://localhost:8000/rating');
+            this.xhrGET.send();
+        }
     }
 
 }
