@@ -1,6 +1,7 @@
+const ratingURL = 'http://localhost:8000/rating';
 
 export default class BackEnd {
-    constructor() {
+    constructor(mainScene) {
         this.xhrGET = new XMLHttpRequest();
         this.xhrPUT = new XMLHttpRequest();
 
@@ -12,7 +13,7 @@ export default class BackEnd {
             else if (this.xhrGET.readyState == 4) {
                 if (this.xhrGET.status == 200) {
                     //TODO
-                    console.log(JSON.parse(this.xhrGET.responseText));
+                    mainScene.events.emit('onRatingRecived', JSON.parse(this.xhrGET.responseText));
                 }
                 else if (this.xhrGET.status == 400) {
                     console.log(this.xhrGET.responseText);
@@ -35,7 +36,7 @@ export default class BackEnd {
 
     sendResult(result, async = true) {
         if (this.xhrPUT.readyState == 0) {
-            this.xhrPUT.open('put', 'http://localhost:8000/rating', async);
+            this.xhrPUT.open('put', ratingURL, async);
             this.xhrPUT.setRequestHeader("Content-Type", "application/json");
             this.xhrPUT.send(JSON.stringify(result));
         }
@@ -43,7 +44,7 @@ export default class BackEnd {
 
     reciveRaiting(async = true) {
         if (this.xhrGET.readyState == 0) {
-            this.xhrGET.open('get', 'http://localhost:8000/rating', async);
+            this.xhrGET.open('get', ratingURL, async);
             this.xhrGET.send();
         }
     }

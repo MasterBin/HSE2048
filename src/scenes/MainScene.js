@@ -1,7 +1,6 @@
 import FieldManager from "../FieldManager.js";
 import KeyHandler from "../KeyHandler.js";
 import BackEnd from "../BackEnd.js";
-import RatingTableScene from "./RatingTableScene.js";
 
 const sceneConfig = {
     spacing: 8,
@@ -18,17 +17,17 @@ export default class MainScene extends Phaser.Scene {
         
         this.fieldManager = new FieldManager(this, sceneConfig);
         this.keyHandler = new KeyHandler(this, this.fieldManager);
-        
+        this.backEnd = new BackEnd(this);
 
         // Add first two tiles on the field.
         this.fieldManager.addNewTile();
         this.fieldManager.addNewTile();
 
         //TODO:
-        // let be = new BackEnd();
+        
         // be.reciveRaiting();
-        //let scene = new RatingTableScene(this);
-        //this.scene.launch("RatingTableScene", scene);
+        this.scene.launch("RatingTableScene", this, this.backEnd);
+        this.backEnd.reciveRaiting();
         //this.scene.stop();
-    }   
+    }
 }
