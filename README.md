@@ -1,7 +1,7 @@
 # HSE2048
 
 
-HSE2048 is a 2048 web game that use [Phaser](https://phaser.io) engine.
+HSE2048 is a 2048 web game that uses [Phaser](https://phaser.io) framework.
 
 ### Installation
 
@@ -19,7 +19,7 @@ $ node initialization.js
 ```
 Then, go to your browser and type this adress
 ```
-localhost:3000
+localhost:8000
 ```
 
 

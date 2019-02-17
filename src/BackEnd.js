@@ -33,17 +33,17 @@ export default class BackEnd {
         }
     }
 
-    sendResult(result) {
+    sendResult(result, async = true) {
         if (this.xhrPUT.readyState == 0) {
-            this.xhrPUT.open('put', 'http://localhost:8000/rating');
+            this.xhrPUT.open('put', 'http://localhost:8000/rating', async);
             this.xhrPUT.setRequestHeader("Content-Type", "application/json");
             this.xhrPUT.send(JSON.stringify(result));
         }
     }
 
-    reciveRaiting() {
+    reciveRaiting(async = true) {
         if (this.xhrGET.readyState == 0) {
-            this.xhrGET.open('get', 'http://localhost:8000/rating');
+            this.xhrGET.open('get', 'http://localhost:8000/rating', async);
             this.xhrGET.send();
         }
     }
