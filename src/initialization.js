@@ -1,5 +1,5 @@
-import MainScene from './MainScene.js';
-import PreloadScene from './PreloadScene.js';
+import MainScene from './scenes/MainScene.js';
+import PreloadScene from './scenes/PreloadScene.js';
 
 const config = {
     width: 500,

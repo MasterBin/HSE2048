@@ -1,5 +1,6 @@
-import FieldManager from "./FieldManager.js";
-import KeyHandler from "./KeyHandler.js";
+import FieldManager from "../FieldManager.js";
+import KeyHandler from "../KeyHandler.js";
+import BackEnd from "../BackEnd.js";
 
 const sceneConfig = {
     spacing: 8,
@@ -21,6 +22,8 @@ export default class MainScene extends Phaser.Scene {
         // Add first two tiles on the field.
         this.fieldManager.addNewTile();
         this.fieldManager.addNewTile();
+
+        new BackEnd();
     }
     //update() {}
         

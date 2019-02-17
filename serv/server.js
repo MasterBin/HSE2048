@@ -2,10 +2,9 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 
-const index = "./rating";
+const index = "/rating";
 const ratingPath = "./rating.json";
 
-// TODO check json body
 app.use(express.json());
 
 //load index.html
@@ -98,4 +97,4 @@ app.use((err, req, res, next) => {
 });
 
 /// exec server
-app.listen(3000, () => console.log("Listening on 3000"));
+app.listen(8000, () => console.log("Listening on 8000"));
