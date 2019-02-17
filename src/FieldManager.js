@@ -49,8 +49,11 @@ export default class FieldManager {
                         this.array[curRow + shiftRow][curCol + shiftCol].increased == false) {
                     
                     this.array[curRow][curCol].num = 0;
+                    this.array[curRow][curCol].sprite.visible = false;
 
                     this.array[curRow + shiftRow][curCol + shiftCol].num += 1;
+                    this.array[curRow + shiftRow][curCol + shiftCol].sprite.setFrame(this.array[curRow + shiftRow][curCol + shiftCol].num - 1);
+                    this.array[curRow + shiftRow][curCol + shiftCol].sprite.visible = true;
 
                     this.array[curRow + shiftRow][curCol + shiftCol].increased = true;
                     somethingMoved = true;
@@ -61,7 +64,11 @@ export default class FieldManager {
                     shiftRow -= y;
                     if (shiftCol != 0 || shiftRow != 0) {
                         this.array[curRow + shiftRow][curCol + shiftCol].num = current.num;
+                        this.array[curRow + shiftRow][curCol + shiftCol].sprite.setFrame(current.num - 1);
+                        this.array[curRow + shiftRow][curCol + shiftCol].sprite.visible = true;
+
                         this.array[curRow][curCol].num = 0;
+                        this.array[curRow][curCol].sprite.visible = false;
                         
                         somethingMoved = true;
                     }
