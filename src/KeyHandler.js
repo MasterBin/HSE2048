@@ -4,11 +4,11 @@ export default class KeyHandler {
 
     constructor (game, fieldManager) {
         this.game = game;
-        game.input.keyboard.on("keydown", this.onKeyPressed, this);
+        game.input.keyboard.on("keydown", this.keyPressedhandler, this);
         game.events.on("onMoved", fieldManager.moveHandler, fieldManager);
     }
 
-    onKeyPressed (key) {
+    keyPressedhandler (key) {
         
         switch (key.code) {
             case "KeyW":

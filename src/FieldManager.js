@@ -1,23 +1,14 @@
 // Will manipulate field. Updates it and recives all events from keys.
 export default class FieldManager {
 
-    constructor (game, sceneConfig) {
+    constructor (mainScene, sceneConfig) {
         this.sceneConfig = sceneConfig;
-        this.game = game;
-        this.field = game.add.image(250,250,'field');
+        this.mainScene = mainScene;
+        this.field = mainScene.add.image(250,250,'field');
         this.array = [];
-        this.group = game.add.group();
+        //this.group = mainScene.add.group();
 
         this._init();
-    }
-
-    //TODO delete
-    _reload() {
-        for (let i = 0; i < 4; ++i){
-            for (let j = 0; j < 4; ++j) {
-                this.array[i][j].increased = false;
-            }
-        }
     }
 
     moveHandler(x,y) {
@@ -77,16 +68,12 @@ export default class FieldManager {
         }
 
         if (somethingMoved)
-            this.addNewTile();
+            this._addNewTile();
 
         this._reload();
     }
 
-    _fitToField(x, y) {
-        return ( x>=0 && x<4 ) && ( y>=0 && y<4 );
-    }
-
-    addNewTile () {
+    _addNewTileP () {
         let emptyTiles = [];
         for(let i = 0; i < 4; ++i) {
             for(let j = 0; j < 4; ++j) {
@@ -104,6 +91,18 @@ export default class FieldManager {
         newTile.sprite.visible = true;
         newTile.sprite.setFrame(0)
     }
+
+    _reload() {
+        for (let i = 0; i < 4; ++i){
+            for (let j = 0; j < 4; ++j) {
+                this.array[i][j].increased = false;
+            }
+        }
+    }
+
+    _fitToField(x, y) {
+        return ( x>=0 && x<4 ) && ( y>=0 && y<4 );
+    }
     
     _tilePosition(pos) {
         return (this.sceneConfig.tileSize + this.sceneConfig.spacing) * ((pos < 0)? -pos : pos) +
@@ -114,7 +113,7 @@ export default class FieldManager {
         for (let i = 0; i < 4; ++i) {
             this.array[i] = [];
             for (let j = 0; j < 4; ++j) {
-                let tile = this.game.add.sprite(this._tilePosition(j),this._tilePosition(i), 'tiles');
+                let tile = this.mainScene.add.sprite(this._tilePosition(j),this._tilePosition(i), 'tiles');
                 tile.alpha = 0.5; // TODO 0 and after appearance become 1
                 tile.visible = false;
                 this.group.add(tile);

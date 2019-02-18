@@ -2,7 +2,7 @@ const ratingURL = 'http://localhost:8000/rating';
 
 export default class BackEnd {
     constructor(mainScene) {
-        this.xhrGET = new XMLHttpRequest();
+        this.xhrGET = new XMLHttpRequest();r
         this.xhrPUT = new XMLHttpRequest();
 
         this.xhrGET.onreadystatechange = () => {
@@ -42,7 +42,7 @@ export default class BackEnd {
         }
     }
 
-    reciveRaiting(async = true) {
+    reciveRating(async = true) {
         if (this.xhrGET.readyState == 0) {
             this.xhrGET.open('get', ratingURL, async);
             this.xhrGET.send();

@@ -17,17 +17,17 @@ export default class MainScene extends Phaser.Scene {
         
         this.fieldManager = new FieldManager(this, sceneConfig);
         this.keyHandler = new KeyHandler(this, this.fieldManager);
-        this.backEnd = new BackEnd(this);
+        this.backend = new BackEnd(this);
 
         // Add first two tiles on the field.
-        this.fieldManager.addNewTile();
-        this.fieldManager.addNewTile();
+        this.fieldManager._addNewTile();
+        this.fieldManager._addNewTile();
 
         //TODO:
         
-        // be.reciveRaiting();
+        // be.reciveRating();
         this.scene.launch("RatingTableScene", this, this.backEnd);
-        this.backEnd.reciveRaiting();
+        this.backend.reciveRating();
         //this.scene.stop();
     }
 }

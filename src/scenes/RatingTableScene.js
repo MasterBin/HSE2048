@@ -6,7 +6,7 @@ export default class RatingTableScene extends Phaser.Scene {
     }
 
     init (mainScene) {
-        mainScene.events.on('onRatingRecived', this.reciveTableHandler, this);
+        mainScene.events.on('onRatingRecived', this._reciveTableHandler, this);
     }
 
     create() {
@@ -26,7 +26,7 @@ export default class RatingTableScene extends Phaser.Scene {
         }
     }
 
-    reciveTableHandler (table) {
+    _reciveTableHandler (table) {
         this.loadingtext.setText('');
         for (let i = 0 ; i< table.length; ++i) {
             this.ratingText[i].setText(`${i+1}. ${table[i].name}   ${table[i].score}`);
