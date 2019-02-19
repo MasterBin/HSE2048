@@ -6,11 +6,10 @@ export default class BackEnd {
         this.xhrPUT = new XMLHttpRequest();
 
         this.xhrGET.onreadystatechange = () => {
-
             if (this.xhrGET.readyState == 3) {
                 // TODO: loading
             }
-            else if (this.xhrGET.sreadyState == 4) {
+            if (this.xhrGET.readyState == 4) {
                 if (this.xhrGET.status == 200) {
                     //TODO
                     mainScene.events.emit('onRatingRecived', JSON.parse(this.xhrGET.responseText));
@@ -43,7 +42,9 @@ export default class BackEnd {
     }
 
     reciveRating(async = true) {
+        
         if (this.xhrGET.readyState == 0) {
+            console.log("recive");
             this.xhrGET.open('get', ratingURL, async);
             this.xhrGET.send();
         }

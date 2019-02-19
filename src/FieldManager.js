@@ -99,7 +99,7 @@ export default class FieldManager {
     }
 
     playAnimation(){
-        var speed = 500;
+        var speed = 1000;
         var scene = this.mainScene;
         this.nowPlaying = 0;
         for(let i = 0; i < this.fakeTiles.length; i++){
@@ -112,7 +112,7 @@ export default class FieldManager {
                     scaleX: 1,
                     scaleY: 1,
                     duration: speed,
-                    onStart: function(tween, target){
+                    onStart: function(tween, target) {
                         target[0].scaleX = 0;
                         target[0].scaleY = 0;
                         target[0].visible = true;

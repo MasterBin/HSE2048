@@ -27,8 +27,8 @@ export default class MainScene extends Phaser.Scene {
         //TODO:
         
         // be.reciveRating();
-        //this.scene.launch("RatingTableScene", this, this.backEnd);
-        //this.backend.reciveRating();
+        this.scene.launch("RatingTableScene", this);
+        this.backend.reciveRating();
         //this.scene.stop();
     }
 }

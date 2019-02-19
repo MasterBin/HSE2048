@@ -6,10 +6,13 @@ export default class RatingTableScene extends Phaser.Scene {
     }
 
     init (mainScene) {
+        console.log(mainScene);
         mainScene.events.on('onRatingRecived', this._reciveTableHandler, this);
     }
 
     create() {
+
+        console.log("create");
         this.add.image(250, 250, 'rating');
 
         this.loadingtext = this.add.text(190, 230, 'Loading...', {

@@ -31,6 +31,7 @@ fs.readFile(ratingPath, 'utf8', (err, content) => {
  *  GET REQUEST
 */
 app.get(index, (req, res) => {
+    console.log("[GET REQUEST] {"+ req.hostname+ "}");
     res.send(JSON.stringify(g_rating.table));
 });
 
