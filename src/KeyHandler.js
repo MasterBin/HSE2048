@@ -4,12 +4,19 @@ export default class KeyHandler {
 
     constructor (game, fieldManager) {
         this.game = game;
-        game.input.keyboard.on("keydown", this.keyPressedhandler, this);
+        game.input.keyboard.on("keydown", this.keyPressedHandler, this);
         game.events.on("onMoved", fieldManager.moveHandler, fieldManager);
     }
 
-    keyPressedhandler (key) {
-        
+    keyPressedHandler (key) {
+        //this.game.tweens.destroy();
+        for(let i = 0; i < this.game.fieldManager.fakeTilesSprits.length; i++){
+            this.game.fieldManager.fakeTilesSprits[i].destroy();
+        }
+        this.game.tweens.killAll();
+        this.game.fieldManager.fakeTilesSprits = [];
+        this.game.fieldManager.fakeTiles = [];
+        this.game.fieldManager._reload();
         switch (key.code) {
             case "KeyW":
             case "ArrowUp":

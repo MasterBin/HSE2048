@@ -10,7 +10,7 @@ export default class BackEnd {
             if (this.xhrGET.readyState == 3) {
                 // TODO: loading
             }
-            else if (this.xhrGET.readyState == 4) {
+            else if (this.xhrGET.sreadyState == 4) {
                 if (this.xhrGET.status == 200) {
                     //TODO
                     mainScene.events.emit('onRatingRecived', JSON.parse(this.xhrGET.responseText));

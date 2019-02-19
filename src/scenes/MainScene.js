@@ -20,8 +20,9 @@ export default class MainScene extends Phaser.Scene {
         this.backend = new BackEnd(this);
 
         // Add first two tiles on the field.
-        this.fieldManager._addNewTile();
-        this.fieldManager._addNewTile();
+        this.fieldManager.addNewTile();
+        this.fieldManager.addNewTile();
+        this.fieldManager.playAnimation();
 
         //TODO:
         
