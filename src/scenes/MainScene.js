@@ -20,15 +20,15 @@ export default class MainScene extends Phaser.Scene {
         this.backend = new BackEnd(this);
 
         // Add first two tiles on the field.
-        this.fieldManager.addNewTile();
-        this.fieldManager.addNewTile();
-        this.fieldManager.playAnimation();
+
+        
 
         //TODO:
         
-        // be.reciveRating();
-        this.scene.launch("RatingTableScene", this);
-        this.backend.reciveRating();
+        //this.scene.launch("RatingTableScene", this);
+        //this.backend.reciveRating();
         //this.scene.stop();
+        this.fieldManager.start();
+        //this.fieldManager.pause();
     }
 }

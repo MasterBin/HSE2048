@@ -10,13 +10,7 @@ export default class KeyHandler {
 
     keyPressedHandler (key) {
         //this.game.tweens.destroy();
-        for(let i = 0; i < this.game.fieldManager.fakeTilesSprits.length; i++){
-            this.game.fieldManager.fakeTilesSprits[i].destroy();
-        }
-        this.game.tweens.killAll();
-        this.game.fieldManager.fakeTilesSprits = [];
-        this.game.fieldManager.fakeTiles = [];
-        this.game.fieldManager._reload();
+        
         switch (key.code) {
             case "KeyW":
             case "ArrowUp":
