@@ -2,7 +2,7 @@ const ratingURL = 'http://localhost:8000/rating';
 
 export default class BackEnd {
     constructor(mainScene) {
-        this.xhrGET = new XMLHttpRequest();r
+        this.xhrGET = new XMLHttpRequest();
         this.xhrPUT = new XMLHttpRequest();
 
         this.xhrGET.onreadystatechange = () => {
