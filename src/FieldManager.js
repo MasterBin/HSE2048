@@ -1,4 +1,4 @@
-import FieldAnimation from "./FieldAnimation";
+import FieldAnimation from "./FieldAnimation.js";
 
 //import FieldAnimation from "./FieldAnimation";
 

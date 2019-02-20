@@ -9,7 +9,7 @@ export default class KeyHandler {
     }
 
     keyPressedHandler (key) {
-        //this.game.tweens.destroy();
+        //this.mainScene.tweens.destroy();
         
         switch (key.code) {
             case "KeyW":
