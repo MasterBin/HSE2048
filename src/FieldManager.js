@@ -13,8 +13,9 @@ export default class FieldManager {
         this.paused = false;
         this.started = false;
         this.animation = new FieldAnimation(this, mainScene);
-        this.keyPresed;
         this.canMove = true;
+        this.canAnimate = true;
+        this.toIncrease = 0;
     }
 
     start() {
@@ -50,28 +51,40 @@ export default class FieldManager {
 
 
     redraw(){
+        this.canMove = false;
         for (let i = 0; i < 4; ++i){
             for (let j = 0; j < 4; ++j) {
-                this.array[i][j].sprite.visible = false;
-                this.array[i][j].sprite.setFrame(this.array[i][j].num - 1 > -1 ? this.array[i][j].num - 1 : 0);
-                this.array[i][j].sprite.x = this._tilePosition(j);
-                this.array[i][j].sprite.y = this._tilePosition(i);
+                this.array[i][j].visible = false;
+                this.array[i][j].setFrame(this.array[i][j].num - 1 > -1 ? this.array[i][j].num - 1 : 0);
+                this.array[i][j].x = this._tilePosition(j);
+                this.array[i][j].y = this._tilePosition(i);
                 if (this.array[i][j].num > 0){
-                    this.array[i][j].sprite.visible = true;
+                    this.array[i][j].visible = true;
                 }
-
+                if(this.array[i][j].increased && this.canAnimate){
+                    this.toIncrease++;
+                    this.animation.addMovement(this.array[i][j]);
+                }
                 this.array[i][j].increased = false;
             }
         }
-        this._addNewTile(false);
+
+        this._addNewTile();
+        if(this.canAnimate && this.toIncrease > 0){
+            this.animation.doIncrease();
+        }
+        
+        this.canAnimate = true;
     }
-    
+
 
     moveHandler(x,y) {
         this.canMove = false;
+
         if (! this.started || this.paused)
             return;
-
+        
+        
         this.animation.stop();
 
         let somethingMoved = false;
@@ -104,9 +117,9 @@ export default class FieldManager {
                     this.array[curRow + shiftRow][curCol + shiftCol].num += 1;
                     this.array[curRow + shiftRow][curCol + shiftCol].increased = true;
 
-                    this.array[curRow][curCol].sprite.destination = { x: this._tilePosition(curCol + shiftCol), 
+                    this.array[curRow][curCol].destination = { x: this._tilePosition(curCol + shiftCol), 
                                                                       y: this._tilePosition(curRow + shiftRow)};
-                    this.animation.addMovement(this.array[curRow][curCol].sprite);
+                    this.animation.addMovement(this.array[curRow][curCol]);
 
                     somethingMoved = true;
                 }
@@ -118,9 +131,9 @@ export default class FieldManager {
                         this.array[curRow + shiftRow][curCol + shiftCol].num = current.num;
                         this.array[curRow][curCol].num = 0;
 
-                        this.array[curRow][curCol].sprite.destination = { x: this._tilePosition(curCol + shiftCol), 
+                        this.array[curRow][curCol].destination = { x: this._tilePosition(curCol + shiftCol), 
                                                                           y: this._tilePosition(curRow + shiftRow)};
-                        this.animation.addMovement(this.array[curRow][curCol].sprite)
+                        this.animation.addMovement(this.array[curRow][curCol])
                         
                         somethingMoved = true;
                     }
@@ -140,7 +153,7 @@ export default class FieldManager {
         return ( x>=0 && x<4 ) && ( y>=0 && y<4 );
     }
 
-    _addNewTile (animated) {
+    _addNewTile () {
         let emptyTiles = [];
         for(let i = 0; i < 4; ++i) {
             for(let j = 0; j < 4; ++j) {
@@ -155,8 +168,14 @@ export default class FieldManager {
         let newTileIndex = Phaser.Utils.Array.GetRandom(emptyTiles);
         let newTile = this.array[newTileIndex.row][newTileIndex.col];
         newTile.num = 1;
-        newTile.sprite.visible = true;
-        newTile.sprite.setFrame(0)
+        newTile.setFrame(0)
+        newTile.visible = false;
+        if(this.canAnimate){
+            this.animation.doApperance(newTile);
+        }
+        else{
+            newTile.visible = true;
+        }
     }
     
     _tilePosition(pos) {
@@ -172,11 +191,9 @@ export default class FieldManager {
                 tile.alpha = 1;
                 tile.visible = false;
                 tile.destination = { x: -1, y: -1 };
-                this.array[i][j] = {
-                    sprite: tile,
-                    num: 0,
-                    increased: false
-                };
+                tile.num = 0;
+                tile.increased = false;
+                this.array[i][j] = tile;
             }
         }
     }
