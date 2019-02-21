@@ -64,7 +64,7 @@ export default class FieldAnimation {
             },
 
             yoyo: true,
-            ease: 'Back.easeInOut',
+            ease: 'Quart.easeInOut',
             duration: this.field.sceneConfig.movingSpeed / 2,
 
             onStartParams: [ this.field ],

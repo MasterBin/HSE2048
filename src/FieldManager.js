@@ -23,16 +23,16 @@ export default class FieldManager {
             if (this.paused) {
                 this.pause = false;
             }
-            else {
-                for (let i = 0; i < 4; ++i) {
-                    for (let j = 0; j < 4; ++j) {
-                        this.array[i][j].increased = false;
-                        this.array[i][j].num = 0;
-                    }
-                }
+            // else {
+            //     for (let i = 0; i < 4; ++i) {
+            //         for (let j = 0; j < 4; ++j) {
+            //             this.array[i][j].increased = false;
+            //             this.array[i][j].num = 0;
+            //         }
+            //     }
 
-                _reload();
-            }
+            //     _reload();
+            // }
         }
         else {
             this.started = true;
