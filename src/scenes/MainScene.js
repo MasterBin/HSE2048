@@ -5,7 +5,8 @@ import BackEnd from "../BackEnd.js";
 const sceneConfig = {
     spacing: 8,
     tileSize: 115,
-    fieldSize: 500
+    fieldSize: 500,
+    movingSpeed: 100
 };
 
 export default class MainScene extends Phaser.Scene {

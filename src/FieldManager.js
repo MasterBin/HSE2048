@@ -12,7 +12,9 @@ export default class FieldManager {
         this.array = [];
         this.paused = false;
         this.started = false;
-        this.animation = new FieldAnimation(this);
+        this.animation = new FieldAnimation(this, mainScene);
+        this.keyPresed;
+        this.canMove = true;
     }
 
     start() {
@@ -46,16 +48,27 @@ export default class FieldManager {
         }
     }
 
-    //TODO delete
-    _reload() {
+
+    redraw(){
         for (let i = 0; i < 4; ++i){
             for (let j = 0; j < 4; ++j) {
+                this.array[i][j].sprite.visible = false;
+                this.array[i][j].sprite.setFrame(this.array[i][j].num - 1 > -1 ? this.array[i][j].num - 1 : 0);
+                this.array[i][j].sprite.x = this._tilePosition(j);
+                this.array[i][j].sprite.y = this._tilePosition(i);
+                if (this.array[i][j].num > 0){
+                    this.array[i][j].sprite.visible = true;
+                }
+
                 this.array[i][j].increased = false;
             }
         }
+        this._addNewTile(false);
     }
+    
 
     moveHandler(x,y) {
+        this.canMove = false;
         if (! this.started || this.paused)
             return;
 
@@ -65,7 +78,6 @@ export default class FieldManager {
         for (let i = 0; i < 4; ++i){
             for (let j = 0; j < 4; ++j) {
                 
-                // начнем с конца
                 let curRow = ( y == 1 )? 3 - i : i;
                 let curCol = ( x == 1 )? 3 - j : j;
                 let current = this.array[curRow][curCol];
@@ -89,13 +101,13 @@ export default class FieldManager {
                         this.array[curRow + shiftRow][curCol + shiftCol].increased == false) {
                     
                     this.array[curRow][curCol].num = 0;
-                    this.array[curRow][curCol].sprite.visible = false;
-
                     this.array[curRow + shiftRow][curCol + shiftCol].num += 1;
-                    this.array[curRow + shiftRow][curCol + shiftCol].sprite.setFrame(this.array[curRow + shiftRow][curCol + shiftCol].num - 1);
-                    this.array[curRow + shiftRow][curCol + shiftCol].sprite.visible = true;
-
                     this.array[curRow + shiftRow][curCol + shiftCol].increased = true;
+
+                    this.array[curRow][curCol].sprite.destination = { x: this._tilePosition(curCol + shiftCol), 
+                                                                      y: this._tilePosition(curRow + shiftRow)};
+                    this.animation.addMovement(this.array[curRow][curCol].sprite);
+
                     somethingMoved = true;
                 }
                 else {
@@ -104,11 +116,11 @@ export default class FieldManager {
                     shiftRow -= y;
                     if (shiftCol != 0 || shiftRow != 0) {
                         this.array[curRow + shiftRow][curCol + shiftCol].num = current.num;
-                        this.array[curRow + shiftRow][curCol + shiftCol].sprite.setFrame(current.num - 1);
-                        this.array[curRow + shiftRow][curCol + shiftCol].sprite.visible = true;
-
                         this.array[curRow][curCol].num = 0;
-                        this.array[curRow][curCol].sprite.visible = false;
+
+                        this.array[curRow][curCol].sprite.destination = { x: this._tilePosition(curCol + shiftCol), 
+                                                                          y: this._tilePosition(curRow + shiftRow)};
+                        this.animation.addMovement(this.array[curRow][curCol].sprite)
                         
                         somethingMoved = true;
                     }
@@ -116,17 +128,19 @@ export default class FieldManager {
             }
         }
 
-        if (somethingMoved)
-            this._addNewTile();
-
-        this._reload();
+        if (somethingMoved){
+            this.animation.doMove();
+        }
+        else{
+            this.canMove = true;
+        }
     }
 
     _fitToField(x, y) {
         return ( x>=0 && x<4 ) && ( y>=0 && y<4 );
     }
 
-    _addNewTile () {
+    _addNewTile (animated) {
         let emptyTiles = [];
         for(let i = 0; i < 4; ++i) {
             for(let j = 0; j < 4; ++j) {
@@ -155,9 +169,9 @@ export default class FieldManager {
             this.array[i] = [];
             for (let j = 0; j < 4; ++j) {
                 let tile = this.mainScene.add.sprite(this._tilePosition(j),this._tilePosition(i), 'tiles');
-                tile.alpha = 0.5; // TODO 0 and after appearance become 1
+                tile.alpha = 1;
                 tile.visible = false;
-                //this.group.add(tile);
+                tile.destination = { x: -1, y: -1 };
                 this.array[i][j] = {
                     sprite: tile,
                     num: 0,

@@ -9,28 +9,28 @@ export default class KeyHandler {
     }
 
     keyPressedHandler (key) {
-        //this.mainScene.tweens.destroy();
-        
-        switch (key.code) {
-            case "KeyW":
-            case "ArrowUp":
-                this.game.events.emit("onMoved", 0, -1);
-                break;
-
-            case "KeyA":
-            case "ArrowLeft":
-                this.game.events.emit("onMoved", -1, 0);
-                break;
-
-            case "KeyS":
-            case "ArrowDown":
-                this.game.events.emit("onMoved", 0, 1);
-                break;
-
-            case "KeyD":
-            case "ArrowRight":
-                this.game.events.emit("onMoved", 1, 0);
-                break;
+        if(this.game.fieldManager.canMove){
+            switch (key.code) {
+                case "KeyW":
+                case "ArrowUp":
+                    this.game.events.emit("onMoved", 0, -1);
+                    break;
+    
+                case "KeyA":
+                case "ArrowLeft":
+                    this.game.events.emit("onMoved", -1, 0);
+                    break;
+    
+                case "KeyS":
+                case "ArrowDown":
+                    this.game.events.emit("onMoved", 0, 1);
+                    break;
+    
+                case "KeyD":
+                case "ArrowRight":
+                    this.game.events.emit("onMoved", 1, 0);
+                    break;
+            }
         }
     }
 
