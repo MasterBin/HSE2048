@@ -1,3 +1,5 @@
+import { gameState } from "./FieldManager.js"
+
 export default class FieldAnimation {
     
     constructor (field, mainScene) {
@@ -96,6 +98,12 @@ export default class FieldAnimation {
             onComplete: function(tween, targets, field){
                 targets[0].scaleX = 1;
                 targets[0].scaleY = 1;
+                if (field.state == gameState.LOSE){
+                    field.GameLose();
+                }
+                else if (field.state == gameState.WIN){
+                    field.GameWin();
+                }
                 if (field.toIncrease == 0){
                     field.canAnimate = true;
                 }

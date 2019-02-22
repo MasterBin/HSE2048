@@ -1,19 +1,25 @@
 import FieldAnimation from "./FieldAnimation.js";
 
+export const gameState = { WIN: 0,
+                LOSE: 1,
+                USUAL: 2};
+
 // Will manipulate field. Updates it and recives all events from keys.
 export default class FieldManager {
 
     constructor(mainScene, sceneConfig) {
         this.sceneConfig = sceneConfig;
         this.mainScene = mainScene;
+        this.animation = new FieldAnimation(this, mainScene);
         mainScene.add.image(250, 250, 'field');
         this.array = [];
         this.paused = false;
         this.started = false;
-        this.animation = new FieldAnimation(this, mainScene);
         this.canMove = true;
         this.canAnimate = true;
         this.toIncrease = 0;
+        this.emptyTiles = [];
+        this.state = gameState.USUAL;
     }
 
     start() {
@@ -49,6 +55,37 @@ export default class FieldManager {
         }
     }
 
+    
+    _checkGameOver(){
+        this.emptyTiles = this._findEmptyTiles();
+        if (this.emptyTiles.length > 1){
+            return;
+        }
+        let moves = {
+            0: { x: 0,  y: -1 }, // Up
+            1: { x: 0,  y: 1  }, // Down
+            2: { x: -1, y: 0  }, // Left
+            3: { x: 1,  y: 0  }  // Right
+        }
+        for(let i = 0; i < 4; i++){
+            for(let j = 0; j < 4; j++){
+                for(let direction = 0; direction < 4; direction++){
+                    let curNum = this.array[i][j].num;
+                    if (curNum > 0){
+                        let otherTile = { x: i + moves[direction].x, y: j + moves[direction].y };
+                        if (this._fitToField(otherTile.x, otherTile.y) && curNum == this.array[otherTile.x][otherTile.y].num){
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        console.log("lose");
+        this.state = gameState.LOSE;
+        this.paused = true;
+    }
+
+
     _redraw() {
         this.canMove = false;
         for (let i = 0; i < 4; ++i) {
@@ -78,6 +115,9 @@ export default class FieldManager {
 
 
     moveHandler(x, y) {
+        if (!this.canMove){
+            return;
+        }
         this.canMove = false;
 
         if (!this.started || this.paused)
@@ -114,6 +154,12 @@ export default class FieldManager {
 
                     this.array[curRow][curCol].num = 0;
                     this.array[curRow + shiftRow][curCol + shiftCol].num += 1;
+
+                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 9){ //WIN
+                        this.state = gameState.WIN;
+                        this.paused = true;
+                    }
+
                     this.array[curRow + shiftRow][curCol + shiftCol].increased = true;
 
                     this.array[curRow][curCol].destination = {
@@ -145,6 +191,7 @@ export default class FieldManager {
         }
 
         if (somethingMoved) {
+            this._checkGameOver();
             this.animation.doMove();
         }
         else {
@@ -156,19 +203,23 @@ export default class FieldManager {
         return (x >= 0 && x < 4) && (y >= 0 && y < 4);
     }
 
-    _addNewTile() {
-        let emptyTiles = [];
+    _findEmptyTiles(){
+        let tiles = [];
         for (let i = 0; i < 4; ++i) {
             for (let j = 0; j < 4; ++j) {
                 if (this.array[i][j].num == 0) {
-                    emptyTiles.push({
+                    tiles.push({
                         row: i,
                         col: j
                     })
                 }
             }
         }
-        let newTileIndex = Phaser.Utils.Array.GetRandom(emptyTiles);
+        return tiles;
+    }
+
+    _addNewTile() {
+        let newTileIndex = Phaser.Utils.Array.GetRandom(this.emptyTiles);
         let newTile = this.array[newTileIndex.row][newTileIndex.col];
         newTile.num = 1;
         newTile.setFrame(0)
@@ -199,5 +250,27 @@ export default class FieldManager {
                 this.array[i][j] = tile;
             }
         }
+        this.emptyTiles = this._findEmptyTiles();
+    }
+
+
+    // TODO
+    GameLose(){
+        this.mainScene.add.text(250, 250, "LOSE", {
+            font: "bold 128px Arial",
+            align: "center",
+            color: "red",
+            align: "center"
+        });
+    }
+
+    // TODO
+    GameWin(){
+        this.mainScene.add.text(250, 250, "WIN",{
+            font: "bold 128px Arial",
+            align: "center",
+            color: "green",
+            align: "center"
+        });
     }
 }
