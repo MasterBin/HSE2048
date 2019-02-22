@@ -67,6 +67,8 @@ export default class FieldManager {
             2: { x: -1, y: 0  }, // Left
             3: { x: 1,  y: 0  }  // Right
         }
+        this.array[this.emptyTiles[0].row][this.emptyTiles[0].col].num = 1; // Temporary change for this tile 
+
         for(let i = 0; i < 4; i++){
             for(let j = 0; j < 4; j++){
                 for(let direction = 0; direction < 4; direction++){
@@ -74,6 +76,7 @@ export default class FieldManager {
                     if (curNum > 0){
                         let otherTile = { x: i + moves[direction].x, y: j + moves[direction].y };
                         if (this._fitToField(otherTile.x, otherTile.y) && curNum == this.array[otherTile.x][otherTile.y].num){
+                            this.array[this.emptyTiles[0].row][this.emptyTiles[0].col].num = 0; // Сancel temporary change
                             return;
                         }
                     }
@@ -155,7 +158,7 @@ export default class FieldManager {
                     this.array[curRow][curCol].num = 0;
                     this.array[curRow + shiftRow][curCol + shiftCol].num += 1;
 
-                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 9){ //WIN
+                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 7){ //WIN
                         this.state = gameState.WIN;
                         this.paused = true;
                     }
