@@ -1,31 +1,18 @@
-const State = {
-    RECORD : 0,
-    LOADING: 1,
-    COMPLETED: 2
-};
-
 export default class FieldAnimation {
     
     constructor (field, mainScene) {
         this.field = field;
         this.mainScene = mainScene;
-        this.state = State.RECORD;
         this.tilesToMove = []
         this.tween;
         this.tweenNew;
     }
 
     addMovement (movement) {
-        // if (this.state != State.RECORD)
-        //     return;
         this.tilesToMove.push(movement);
-
     }
     
     doMove () {
-        // if (this.state != State.RECORD)
-        //     return;
-
         this.tween = this.mainScene.tweens.add({
             targets: this.tilesToMove,
             x: function(a){
@@ -46,7 +33,7 @@ export default class FieldAnimation {
             onCompleteParams: [ this.field ],
             onComplete: function(tween, targets, field){
                 field.animation.tilesToMove = []
-                field.redraw();
+                field._redraw();
             }
         });
     }
@@ -118,8 +105,6 @@ export default class FieldAnimation {
 
     
     stop () {
-        // if (this.state != State.LOADING)
-        //     return;
         if (this.tween && this.tween.isPlaying()){
             this.field.canAnimate = false;
             this.tween.complete();
