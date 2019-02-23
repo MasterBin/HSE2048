@@ -3,10 +3,10 @@ import PreloadScene from './scenes/PreloadScene.js';
 import RatingTableScene from './scenes/RatingTableScene.js';
 
 const config = {
-    width: 500,
-    height: 500,
+    width: 1000,
+    height: 1520,
     type: Phaser.AUTO,
-    backgroundColor: 0x000000,
+    backgroundColor: 0x86bcc5,
     physics: Phaser.ARCADE,
     scene: [ PreloadScene, MainScene, RatingTableScene]
 };

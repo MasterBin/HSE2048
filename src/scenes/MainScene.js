@@ -3,9 +3,9 @@ import KeyHandler from "../KeyHandler.js";
 import BackEnd from "../BackEnd.js";
 
 const sceneConfig = {
-    spacing: 8,
-    tileSize: 115,
-    fieldSize: 500,
+    spacing: 16,
+    tileSize: 230,
+    fieldX: 394,
     movingSpeed: 100
 };
 

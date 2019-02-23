@@ -11,7 +11,7 @@ export default class FieldManager {
         this.sceneConfig = sceneConfig;
         this.mainScene = mainScene;
         this.animation = new FieldAnimation(this, mainScene);
-        mainScene.add.image(250, 250, 'field');
+        mainScene.add.image(500, 760, 'field');
         this.array = [];
         this.paused = false;
         this.started = false;
@@ -95,8 +95,9 @@ export default class FieldManager {
             for (let j = 0; j < 4; ++j) {
                 this.array[i][j].visible = false;
                 this.array[i][j].setFrame(this.array[i][j].num - 1 > -1 ? this.array[i][j].num - 1 : 0);
-                this.array[i][j].x = this._tilePosition(j);
-                this.array[i][j].y = this._tilePosition(i);
+                let tilePos = this._tilePosition(i, j);
+                this.array[i][j].x = tilePos.x;
+                this.array[i][j].y = tilePos.y;
                 if (this.array[i][j].num > 0) {
                     this.array[i][j].visible = true;
                 }
@@ -165,10 +166,11 @@ export default class FieldManager {
 
                     this.array[curRow + shiftRow][curCol + shiftCol].increased = true;
 
-                    this.array[curRow][curCol].destination = {
-                        x: this._tilePosition(curCol + shiftCol),
-                        y: this._tilePosition(curRow + shiftRow)
-                    };
+                    let newTilePos = this._tilePosition(curRow + shiftRow, curCol + shiftCol);
+                        this.array[curRow][curCol].destination = {
+                            x: newTilePos.x,
+                            y: newTilePos.y
+                        };
                     this.animation.addMovement(this.array[curRow][curCol]);
 
                     somethingMoved = true;
@@ -181,9 +183,10 @@ export default class FieldManager {
                         this.array[curRow + shiftRow][curCol + shiftCol].num = current.num;
                         this.array[curRow][curCol].num = 0;
 
+                        let newTilePos = this._tilePosition(curRow + shiftRow, curCol + shiftCol);
                         this.array[curRow][curCol].destination = {
-                            x: this._tilePosition(curCol + shiftCol),
-                            y: this._tilePosition(curRow + shiftRow)
+                            x: newTilePos.x,
+                            y: newTilePos.y
                         };
                         this.animation.addMovement(this.array[curRow][curCol])
 
@@ -235,16 +238,22 @@ export default class FieldManager {
         }
     }
 
-    _tilePosition(pos) {
-        return (this.sceneConfig.tileSize + this.sceneConfig.spacing) * ((pos < 0) ? -pos : pos) +
+    _position(pos){
+        return (this.sceneConfig.tileSize + this.sceneConfig.spacing) * pos +
             this.sceneConfig.tileSize / 2 + this.sceneConfig.spacing;
+    }
+
+    _tilePosition(i, j) {
+        return { x: this._position(j), 
+                 y: this.sceneConfig.fieldX + this._position(i) };
     }
 
     _init() {
         for (let i = 0; i < 4; ++i) {
             this.array[i] = [];
             for (let j = 0; j < 4; ++j) {
-                let tile = this.mainScene.add.sprite(this._tilePosition(j), this._tilePosition(i), 'tiles');
+                let tilePos = this._tilePosition(i, j);
+                let tile = this.mainScene.add.sprite(tilePos.x, tilePos.y,  'tiles');
                 tile.alpha = 1;
                 tile.visible = false;
                 tile.destination = { x: -1, y: -1 };
