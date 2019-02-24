@@ -1,4 +1,4 @@
-const ratingURL = 'http://localhost:8000/rating';
+const ratingURL = window.location.href+ 'rating';
 
 export default class BackEnd {
     constructor(mainScene) {

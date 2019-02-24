@@ -37,7 +37,7 @@ const bestScoreConfig = {
 const shareConfig = {
     title: "ssas",
     text: "asasasa",
-    url: "http://bmcloud.mooo.com:8000"
+    url: window.location.href
 }
 
 export default class MainScene extends Phaser.Scene {
