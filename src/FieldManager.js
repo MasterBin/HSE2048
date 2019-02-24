@@ -14,6 +14,7 @@ export default class FieldManager {
         this.mainScene = mainScene;
         this.animation = new FieldAnimation(this, mainScene);
         mainScene.add.image(500, 760, 'field');
+
         this.array = [];
         this.paused = false;
         this.started = false;
@@ -22,6 +23,8 @@ export default class FieldManager {
         this.toIncrease = 0;
         this.emptyTiles = [];
         this.state = gameState.USUAL;
+
+        this.score = 0;
     }
 
     start() {
@@ -30,6 +33,7 @@ export default class FieldManager {
             this._init();
             this._addNewTile();
             this._addNewTile();
+            this.sendScore();
         }
     }
 
@@ -54,9 +58,14 @@ export default class FieldManager {
                 }
             }
             _redraw();
+            this.score = 0;
+            this.sendScore();
         }
     }
 
+    sendScore () {
+        this.mainScene.events.emit('onScoreChanged', this.score);
+    }
 
     // TODO
     GameLose() {
@@ -181,6 +190,9 @@ export default class FieldManager {
 
                     this.array[curRow][curCol].num = 0;
                     this.array[curRow + shiftRow][curCol + shiftCol].num += 1;
+                    
+                    // set new score 
+                    this.score += Math.pow(2,this.array[curRow + shiftRow][curCol + shiftCol].num);
 
                     if (this.array[curRow + shiftRow][curCol + shiftCol].num == 7) { //WIN
                         this.state = gameState.WIN;

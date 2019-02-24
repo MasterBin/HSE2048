@@ -12,24 +12,22 @@ const sceneConfig = {
 const scoreConfig = {
     x: 78,
     y: 220,
-    text: '       \n3333333',
+    text: '       \n#######',
     style: {
         font: "bold 48px Ayuthaya",
         color: "#00A3F7",
-        align: "center",
-        padding: { right: 6}
+        align: "center"
     }
 };
 
 const bestScoreConfig = {
     x: 430,
     y: 220,
-    text: '       \n3333333',
-    style: {
+    text: '       \n#######',
+    style: { 
         font: "bold 48px Ayuthaya",
         color: "00A3F7",
-        align: "center",
-        padding: { right: 6}
+        align: "center"
     }
 };
 
@@ -39,7 +37,7 @@ export default class MainScene extends Phaser.Scene {
     }
 
     scoreChanged (value) {
-        
+        this.scoreText.setText('       \n'+value);
     }
 
     bestScoreChanged (value) {
@@ -47,13 +45,17 @@ export default class MainScene extends Phaser.Scene {
     }
     
 	create() {
-        
         this.fieldManager = new FieldManager(this, sceneConfig);
         this.keyHandler = new KeyHandler(this, this.fieldManager);
         this.backend = new BackEnd(this);
 
         this.scoreText = this.make.text(scoreConfig);
         this.bestScoreText = this.make.text(bestScoreConfig);
+        
+        this.events.on('onScoreChanged', this.scoreChanged, this);
+        
+
+        
 
         //this.scene.launch("RatingTableScene", this);
         //this.backend.reciveRating();
