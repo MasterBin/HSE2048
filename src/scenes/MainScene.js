@@ -10,7 +10,7 @@ const sceneConfig = {
     movingSpeed: 100
 };
 
-//TODO font
+//TODO: font
 const scoreConfig = {
     x: 139,
     y: 220,
@@ -22,7 +22,7 @@ const scoreConfig = {
     }
 };
 
-//TODO font
+//TODO: font
 const bestScoreConfig = {
     x: 446,
     y: 220,
@@ -53,17 +53,21 @@ export default class MainScene extends Phaser.Scene {
         this.backend = new BackEnd(this);
 
         this.scoreText = this.make.text(scoreConfig);
-        this.bestScoreText = this.make.text(bestScoreConfig);
-        
         this.events.on('onScoreChanged', this.scoreChanged, this);
+        this.bestScoreText = this.make.text(bestScoreConfig);
         this.events.on('onBestScoreChanged', this.bestScoreChanged, this);
         
         this.ratingButton = new Button('ratingButton', 810, 318, this);
         this.ratingButton.Up = () => {
             this.scene.launch("RatingTableScene", this); 
+            this.fieldManager.pause();
             this.backend.reciveRating();
-        }
-        //this.scene.stop();
+        };
+
+        this.restartButton = new Button('restartButton', 926, 318, this);
+        this.restartButton.Up = () => {
+            this.fieldManager.restart();
+        };
         
         this.fieldManager.start();
     }

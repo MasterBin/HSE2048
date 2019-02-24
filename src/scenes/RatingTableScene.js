@@ -9,7 +9,8 @@ export default class RatingTableScene extends Phaser.Scene {
     }
 
     init (mainScene) {
-        mainScene.events.on('onRatingRecived', this._reciveTableHandler, this);
+        this.mainScene = mainScene;
+        this.mainScene.events.on('onRatingRecived', this._reciveTableHandler, this);
     }
 
     create() {
@@ -41,6 +42,7 @@ export default class RatingTableScene extends Phaser.Scene {
         this.closeButton = new Button('closeButton', 871, 255, this);
 
         this.closeButton.Up = () => {
+            this.mainScene.fieldManager.resume();
             this.scene.stop('RatingTableScene');
         } 
     }

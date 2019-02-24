@@ -39,7 +39,6 @@ app.get(index, (req, res) => {
  *  PUT REQUEST
 */
 app.put(index, (req, res) => {
-    //TODO: delete
     
     if (!checkInPUT(req)) {
         res.status(400).send("Score and name are required and should be really yours!");

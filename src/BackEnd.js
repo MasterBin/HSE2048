@@ -6,9 +6,6 @@ export default class BackEnd {
         this.xhrPUT = new XMLHttpRequest();
 
         this.xhrGET.onreadystatechange = () => {
-            if (this.xhrGET.readyState == 3) {
-                // TODO: loading
-            }
             if (this.xhrGET.readyState == 4) {
                 if (this.xhrGET.status == 200) {
                     //TODO
@@ -21,7 +18,6 @@ export default class BackEnd {
         }
 
         this.xhrPUT.onreadystatechange = () => {
-
             if (this.xhrPUT.readyState == 4) {
                 if (this.xhrPUT.status == 200) {
                     console.log("|__ADDED_TO_RATING_TABLE__|");

@@ -57,7 +57,8 @@ export default class FieldManager {
                     this.array[i][j].num = 0;
                 }
             }
-            _redraw();
+            this._addNewTile();
+            this._redraw();
             this.score = 0;
             this.sendScore();
         }
@@ -151,14 +152,13 @@ export default class FieldManager {
 
 
     moveHandler(x, y) {
-        if (!this.canMove) {
+        if (!this.canMove)
             return;
-        }
+        
         this.canMove = false;
 
         if (!this.started || this.paused)
             return;
-
 
         this.animation.stop();
 
