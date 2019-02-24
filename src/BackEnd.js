@@ -38,7 +38,6 @@ export default class BackEnd {
     }
 
     reciveRating(async = true) {
-        
         if (this.xhrGET.readyState == 0) {
             console.log("recive");
             this.xhrGET.open('get', ratingURL, async);

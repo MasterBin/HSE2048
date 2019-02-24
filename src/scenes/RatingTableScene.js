@@ -43,6 +43,7 @@ export default class RatingTableScene extends Phaser.Scene {
 
         this.closeButton.Up = () => {
             this.mainScene.fieldManager.resume();
+            this.scene.resume('MainScene');
             this.scene.stop('RatingTableScene');
         } 
     }
@@ -65,3 +66,5 @@ export default class RatingTableScene extends Phaser.Scene {
         }
     }
 }
+
+//TODO: add animation on launch
