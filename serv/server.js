@@ -87,7 +87,7 @@ function checkInPUT(input) {
                  input.body.score < 3932101 && input.body.score > 1;
 
     let name = input.body.name && typeof(input.body.name) == 'string' &&
-                input.body.name.length > 0 && input.body.name.length <= 15;
+                input.body.name.length > 0 && input.body.name.length <= 10;
 
     return score && name;
 };

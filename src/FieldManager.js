@@ -1,8 +1,10 @@
 import FieldAnimation from "./FieldAnimation.js";
 
-export const gameState = { WIN: 0,
-                LOSE: 1,
-                USUAL: 2};
+export const gameState = {
+    WIN: 0,
+    LOSE: 1,
+    USUAL: 2
+};
 
 // Will manipulate field. Updates it and recives all events from keys.
 export default class FieldManager {
@@ -55,27 +57,48 @@ export default class FieldManager {
         }
     }
 
-    
-    _checkGameOver(){
+
+    // TODO
+    GameLose() {
+        this.mainScene.add.text(250, 250, "LOSE", {
+            font: "bold 128px Arial",
+            align: "center",
+            color: "red",
+            align: "center"
+        });
+    }
+
+    // TODO
+    GameWin() {
+        this.mainScene.add.text(250, 250, "WIN", {
+            font: "bold 128px Arial",
+            align: "center",
+            color: "green",
+            align: "center"
+        });
+    }
+
+
+    _checkGameOver() {
         this.emptyTiles = this._findEmptyTiles();
-        if (this.emptyTiles.length > 1){
+        if (this.emptyTiles.length > 1) {
             return;
         }
         let moves = {
-            0: { x: 0,  y: -1 }, // Up
-            1: { x: 0,  y: 1  }, // Down
-            2: { x: -1, y: 0  }, // Left
-            3: { x: 1,  y: 0  }  // Right
+            0: { x: 0, y: -1 }, // Up
+            1: { x: 0, y: 1 }, // Down
+            2: { x: -1, y: 0 }, // Left
+            3: { x: 1, y: 0 }  // Right
         }
         this.array[this.emptyTiles[0].row][this.emptyTiles[0].col].num = 1; // Temporary change for this tile 
 
-        for(let i = 0; i < 4; i++){
-            for(let j = 0; j < 4; j++){
-                for(let direction = 0; direction < 4; direction++){
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                for (let direction = 0; direction < 4; direction++) {
                     let curNum = this.array[i][j].num;
-                    if (curNum > 0){
+                    if (curNum > 0) {
                         let otherTile = { x: i + moves[direction].x, y: j + moves[direction].y };
-                        if (this._fitToField(otherTile.x, otherTile.y) && curNum == this.array[otherTile.x][otherTile.y].num){
+                        if (this._fitToField(otherTile.x, otherTile.y) && curNum == this.array[otherTile.x][otherTile.y].num) {
                             this.array[this.emptyTiles[0].row][this.emptyTiles[0].col].num = 0; // Сancel temporary change
                             return;
                         }
@@ -119,7 +142,7 @@ export default class FieldManager {
 
 
     moveHandler(x, y) {
-        if (!this.canMove){
+        if (!this.canMove) {
             return;
         }
         this.canMove = false;
@@ -159,7 +182,7 @@ export default class FieldManager {
                     this.array[curRow][curCol].num = 0;
                     this.array[curRow + shiftRow][curCol + shiftCol].num += 1;
 
-                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 7){ //WIN
+                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 7) { //WIN
                         this.state = gameState.WIN;
                         this.paused = true;
                     }
@@ -167,10 +190,10 @@ export default class FieldManager {
                     this.array[curRow + shiftRow][curCol + shiftCol].increased = true;
 
                     let newTilePos = this._tilePosition(curRow + shiftRow, curCol + shiftCol);
-                        this.array[curRow][curCol].destination = {
-                            x: newTilePos.x,
-                            y: newTilePos.y
-                        };
+                    this.array[curRow][curCol].destination = {
+                        x: newTilePos.x,
+                        y: newTilePos.y
+                    };
                     this.animation.addMovement(this.array[curRow][curCol]);
 
                     somethingMoved = true;
@@ -209,7 +232,7 @@ export default class FieldManager {
         return (x >= 0 && x < 4) && (y >= 0 && y < 4);
     }
 
-    _findEmptyTiles(){
+    _findEmptyTiles() {
         let tiles = [];
         for (let i = 0; i < 4; ++i) {
             for (let j = 0; j < 4; ++j) {
@@ -238,14 +261,16 @@ export default class FieldManager {
         }
     }
 
-    _position(pos){
+    _position(pos) {
         return (this.sceneConfig.tileSize + this.sceneConfig.spacing) * pos +
             this.sceneConfig.tileSize / 2 + this.sceneConfig.spacing;
     }
 
     _tilePosition(i, j) {
-        return { x: this._position(j), 
-                 y: this.sceneConfig.fieldX + this._position(i) };
+        return {
+            x: this._position(j),
+            y: this.sceneConfig.fieldX + this._position(i)
+        };
     }
 
     _init() {
@@ -253,7 +278,7 @@ export default class FieldManager {
             this.array[i] = [];
             for (let j = 0; j < 4; ++j) {
                 let tilePos = this._tilePosition(i, j);
-                let tile = this.mainScene.add.sprite(tilePos.x, tilePos.y,  'tiles');
+                let tile = this.mainScene.add.sprite(tilePos.x, tilePos.y, 'tiles');
                 tile.alpha = 1;
                 tile.visible = false;
                 tile.destination = { x: -1, y: -1 };
@@ -266,23 +291,4 @@ export default class FieldManager {
     }
 
 
-    // TODO
-    GameLose(){
-        this.mainScene.add.text(250, 250, "LOSE", {
-            font: "bold 128px Arial",
-            align: "center",
-            color: "red",
-            align: "center"
-        });
-    }
-
-    // TODO
-    GameWin(){
-        this.mainScene.add.text(250, 250, "WIN",{
-            font: "bold 128px Arial",
-            align: "center",
-            color: "green",
-            align: "center"
-        });
-    }
 }

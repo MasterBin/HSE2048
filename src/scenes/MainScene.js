@@ -9,9 +9,41 @@ const sceneConfig = {
     movingSpeed: 100
 };
 
+const scoreConfig = {
+    x: 78,
+    y: 220,
+    text: '       \n3333333',
+    style: {
+        font: "bold 48px Ayuthaya",
+        color: "#00A3F7",
+        align: "center",
+        padding: { right: 6}
+    }
+};
+
+const bestScoreConfig = {
+    x: 430,
+    y: 220,
+    text: '       \n3333333',
+    style: {
+        font: "bold 48px Ayuthaya",
+        color: "00A3F7",
+        align: "center",
+        padding: { right: 6}
+    }
+};
+
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super("MainScene");
+    }
+
+    scoreChanged (value) {
+        
+    }
+
+    bestScoreChanged (value) {
+
     }
     
 	create() {
@@ -20,12 +52,9 @@ export default class MainScene extends Phaser.Scene {
         this.keyHandler = new KeyHandler(this, this.fieldManager);
         this.backend = new BackEnd(this);
 
-        // Add first two tiles on the field.
+        this.scoreText = this.make.text(scoreConfig);
+        this.bestScoreText = this.make.text(bestScoreConfig);
 
-        
-
-        //TODO:
-        
         //this.scene.launch("RatingTableScene", this);
         //this.backend.reciveRating();
         //this.scene.stop();

@@ -1,44 +1,57 @@
 export default class RatingTableScene extends Phaser.Scene {
     constructor () {
         super ("RatingTableScene");
-
-        this.ratingText = [];
+        this.names = [];
+        this.scores;
+        this.closeButton
     }
 
     init (mainScene) {
-        console.log(mainScene);
         mainScene.events.on('onRatingRecived', this._reciveTableHandler, this);
     }
 
     create() {
+        this.add.image(500, 800, 'rating');
 
-        console.log("create");
-        this.add.image(250, 250, 'rating');
-
-        this.loadingtext = this.add.text(190, 230, 'Loading...', {
-            font: "bold 32px Arial",
+        this.loadingtext = this.add.text(420, 290, 'Loading...', {
+            font: "bold 32px Ayuthaya",
             align: "center",
-            color: "black"
+            color: "white"
         });
 
         for (let i = 0; i < 10 ; ++i) {
-            this.ratingText.push(this.add.text(100, 100+i*35, '', {
-                font: "bold 16px Arial",
-                color: "black"
+            this.names.push(this.add.text(185, 400+i*100, '', {
+                font: "bold 48px Ayuthaya",
+                color: "#E3F2FD",
+                align: "center",
+                backgroundColor: "#00A3F7",
+                padding: { right: 6}
             }));
         }
+
+        this.scores = this.add.text(600, 310, '', {
+            font: "bold 48px Ayuthaya",
+            color: "black",
+            align: "center",
+            lineSpacing: 40
+        });
     }
 
     _reciveTableHandler (table) {
-        this.loadingtext.setText('');
+        this.loadingtext.setVisible(false);
+
+        let scoreString = '       \n';
         for (let i = 0 ; i< table.length; ++i) {
-            this.ratingText[i].setText(`${i+1}. ${table[i].name}   ${table[i].score}`);
+            this.names[i].setText(`${table[i].name}`);
+            scoreString += `${table[i].score}\n`;
         }
+        this.scores.setText(scoreString);
     }   
 
     _reset() {
         for (let i = 0; i < 10 ; ++i) {
-            this.ratingText[i].setText('');
+            this.names[i].setVisible(false);
+            this.scores[i].setVisible(false);
         }
     }
 }
