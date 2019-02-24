@@ -34,7 +34,7 @@ export default class FieldAnimation {
 
             onCompleteParams: [ this.field ],
             onComplete: function(tween, targets, field){
-                field.animation.tilesToMove = []
+                field.animation.tilesToMove = [];
                 field._redraw();
                 field.sendScore();
             }

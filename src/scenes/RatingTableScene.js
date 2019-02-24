@@ -1,9 +1,11 @@
+import Button from "../Button.js";
+
 export default class RatingTableScene extends Phaser.Scene {
     constructor () {
         super ("RatingTableScene");
         this.names = [];
         this.scores;
-        this.closeButton
+        this.closeButton;
     }
 
     init (mainScene) {
@@ -35,6 +37,12 @@ export default class RatingTableScene extends Phaser.Scene {
             align: "center",
             lineSpacing: 40
         });
+
+        this.closeButton = new Button('closeButton', 871, 255, this);
+
+        this.closeButton.Up = () => {
+            this.scene.stop('RatingTableScene');
+        } 
     }
 
     _reciveTableHandler (table) {

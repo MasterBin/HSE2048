@@ -1,6 +1,7 @@
 import FieldManager from "../FieldManager.js";
 import KeyHandler from "../KeyHandler.js";
 import BackEnd from "../BackEnd.js";
+import Button from "../Button.js";
 
 const sceneConfig = {
     spacing: 16,
@@ -9,23 +10,25 @@ const sceneConfig = {
     movingSpeed: 100
 };
 
+//TODO font
 const scoreConfig = {
-    x: 78,
+    x: 139,
     y: 220,
     text: '       \n#######',
     style: {
-        font: "bold 48px Ayuthaya",
+        font: "bold 48px 'Fedra Sans'",
         color: "#00A3F7",
         align: "center"
     }
 };
 
+//TODO font
 const bestScoreConfig = {
-    x: 430,
+    x: 446,
     y: 220,
     text: '       \n#######',
     style: { 
-        font: "bold 48px Ayuthaya",
+        font: "bold 48px 'Fedra Sans'",
         color: "00A3F7",
         align: "center"
     }
@@ -41,7 +44,7 @@ export default class MainScene extends Phaser.Scene {
     }
 
     bestScoreChanged (value) {
-
+        this.bestScoreText.setText('       \n'+value);
     }
     
 	create() {
@@ -53,14 +56,15 @@ export default class MainScene extends Phaser.Scene {
         this.bestScoreText = this.make.text(bestScoreConfig);
         
         this.events.on('onScoreChanged', this.scoreChanged, this);
+        this.events.on('onBestScoreChanged', this.bestScoreChanged, this);
         
-
-        
-
-        //this.scene.launch("RatingTableScene", this);
-        //this.backend.reciveRating();
+        this.ratingButton = new Button('ratingButton', 810, 318, this);
+        this.ratingButton.Up = () => {
+            this.scene.launch("RatingTableScene", this); 
+            this.backend.reciveRating();
+        }
         //this.scene.stop();
+        
         this.fieldManager.start();
-        //this.fieldManager.pause();
     }
 }
