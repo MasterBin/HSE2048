@@ -1,62 +1,214 @@
+import FieldAnimation from "./FieldAnimation.js";
+
+export const gameState = {
+    WIN: 0,
+    LOSE: 1,
+    USUAL: 2
+};
+
 // Will manipulate field. Updates it and recives all events from keys.
 export default class FieldManager {
 
-    constructor (game, sceneConfig) {
+    constructor(mainScene, sceneConfig) {
         this.sceneConfig = sceneConfig;
-        this.game = game;
-        this.field = game.add.image(250,250,'field');
-        this.array = [];
-        this.group = game.add.group();
+        this.mainScene = mainScene;
+        this.animation = new FieldAnimation(this, mainScene);
+        mainScene.add.image(500, 760, 'field');
 
-        this._init();
+        this.array = [];
+        this.paused = false;
+        this.started = false;
+        this.canMove = true;
+        this.canAnimate = true;
+        this.toIncrease = 0;
+        this.emptyTiles = [];
+        this.state = gameState.USUAL;
+
+        this.score = 0;
+
+        mainScene.events.on("onMoved", this.moveHandler, this);
     }
 
-    //TODO delete
-    _reload() {
-        for (let i = 0; i < 4; ++i){
-            for (let j = 0; j < 4; ++j) {
-                this.array[i][j].increased = false;
-            }
+    start() {
+        if (!this.started) {
+            this.started = true;
+            this._init();
+            this._addNewTile();
+            this._addNewTile();
+            this.sendScore();
         }
     }
 
-    moveHandler(x,y) {
-        let somethingMoved = false;
-        for (let i = 0; i < 4; ++i){
+    pause() {
+        if (this.started) {
+            this.paused = true;
+        }
+    }
+
+    resume() {
+        if (this.started) {
+            this.paused = false;
+        }
+    }
+
+    restart() {
+        if (this.started) {
+            for (let i = 0; i < 4; ++i) {
+                for (let j = 0; j < 4; ++j) {
+                    this.array[i][j].increased = false;
+                    this.array[i][j].num = 0;
+                }
+            }
+            this._addNewTile();
+            this._redraw();
+            this.score = 0;
+            this.sendScore();
+        }
+    }
+
+    sendScore () {
+        this.mainScene.events.emit('onScoreChanged', this.score);
+    }
+
+    // TODO
+    GameLose() {
+        this.mainScene.add.text(250, 250, "LOSE", {
+            font: "bold 128px Arial",
+            align: "center",
+            color: "red",
+            align: "center"
+        });
+    }
+
+    // TODO
+    GameWin() {
+        this.mainScene.add.text(250, 250, "WIN", {
+            font: "bold 128px Arial",
+            align: "center",
+            color: "green",
+            align: "center"
+        });
+    }
+
+
+    _checkGameOver() {
+        this.emptyTiles = this._findEmptyTiles();
+        if (this.emptyTiles.length > 1) {
+            return;
+        }
+        let moves = {
+            0: { x: 0, y: -1 }, // Up
+            1: { x: 0, y: 1 }, // Down
+            2: { x: -1, y: 0 }, // Left
+            3: { x: 1, y: 0 }  // Right
+        }
+        this.array[this.emptyTiles[0].row][this.emptyTiles[0].col].num = 1; // Temporary change for this tile 
+
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                for (let direction = 0; direction < 4; direction++) {
+                    let curNum = this.array[i][j].num;
+                    if (curNum > 0) {
+                        let otherTile = { x: i + moves[direction].x, y: j + moves[direction].y };
+                        if (this._fitToField(otherTile.x, otherTile.y) && curNum == this.array[otherTile.x][otherTile.y].num) {
+                            this.array[this.emptyTiles[0].row][this.emptyTiles[0].col].num = 0; // Сancel temporary change
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        this.state = gameState.LOSE;
+        this.paused = true;
+    }
+
+
+    _redraw() {
+        this.canMove = false;
+        for (let i = 0; i < 4; ++i) {
             for (let j = 0; j < 4; ++j) {
-                
-                // начнем с конца
-                let curRow = ( y == 1 )? 3 - i : i;
-                let curCol = ( x == 1 )? 3 - j : j;
+                this.array[i][j].visible = false;
+                this.array[i][j].setFrame(this.array[i][j].num - 1 > -1 ? this.array[i][j].num - 1 : 0);
+                let tilePos = this._tilePosition(i, j);
+                this.array[i][j].x = tilePos.x;
+                this.array[i][j].y = tilePos.y;
+                if (this.array[i][j].num > 0) {
+                    this.array[i][j].visible = true;
+                }
+                if (this.array[i][j].increased && this.canAnimate) {
+                    this.toIncrease++;
+                    this.animation.addMovement(this.array[i][j]);
+                }
+                this.array[i][j].increased = false;
+            }
+        }
+
+        this._addNewTile();
+        if (this.canAnimate && this.toIncrease > 0) {
+            this.animation.doIncrease();
+        }
+
+        this.canAnimate = true;
+    }
+
+
+    moveHandler(x, y) {
+        if (!this.canMove)
+            return;
+        
+        this.canMove = false;
+
+        if (!this.started || this.paused)
+            return;
+
+        this.animation.stop();
+
+        let somethingMoved = false;
+        for (let i = 0; i < 4; ++i) {
+            for (let j = 0; j < 4; ++j) {
+
+                let curRow = (y == 1) ? 3 - i : i;
+                let curCol = (x == 1) ? 3 - j : j;
                 let current = this.array[curRow][curCol];
 
 
                 if (current.num == 0)
                     continue;
-                
+
                 let shiftRow = y;
                 let shiftCol = x;
 
                 while (this._fitToField(curCol + shiftCol, curRow + shiftRow) &&
-                            this.array[curRow + shiftRow][curCol + shiftCol].num == 0) {
-                    
+                    this.array[curRow + shiftRow][curCol + shiftCol].num == 0) {
+
                     shiftCol += x;
                     shiftRow += y;
                 }
 
                 if (this._fitToField(curCol + shiftCol, curRow + shiftRow) &&
-                        this.array[curRow + shiftRow][curCol + shiftCol].num == current.num &&
-                        this.array[curRow + shiftRow][curCol + shiftCol].increased == false) {
-                    
-                    this.array[curRow][curCol].num = 0;
-                    //TODO: delete
-                    this.array[curRow][curCol].text.setText('');
+                    this.array[curRow + shiftRow][curCol + shiftCol].num == current.num &&
+                    this.array[curRow + shiftRow][curCol + shiftCol].increased == false) {
 
-                    this.array[curRow + shiftRow][curCol + shiftCol].num *= 2;
-                    //TODO: delete
-                    this.array[curRow + shiftRow][curCol + shiftCol].text.setText(JSON.stringify(this.array[curRow + shiftRow][curCol + shiftCol].num));
+                    this.array[curRow][curCol].num = 0;
+                    this.array[curRow + shiftRow][curCol + shiftCol].num += 1;
+                    
+                    // set new score 
+                    this.score += Math.pow(2,this.array[curRow + shiftRow][curCol + shiftCol].num);
+
+                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 12) { //WIN
+                        this.state = gameState.WIN;
+                        this.paused = true;
+                    }
 
                     this.array[curRow + shiftRow][curCol + shiftCol].increased = true;
+
+                    let newTilePos = this._tilePosition(curRow + shiftRow, curCol + shiftCol);
+                    this.array[curRow][curCol].destination = {
+                        x: newTilePos.x,
+                        y: newTilePos.y
+                    };
+                    this.animation.addMovement(this.array[curRow][curCol]);
+
                     somethingMoved = true;
                 }
                 else {
@@ -65,74 +217,91 @@ export default class FieldManager {
                     shiftRow -= y;
                     if (shiftCol != 0 || shiftRow != 0) {
                         this.array[curRow + shiftRow][curCol + shiftCol].num = current.num;
-                        this.array[curRow + shiftRow][curCol + shiftCol].text.setText(JSON.stringify(current.num));
                         this.array[curRow][curCol].num = 0;
-                        //TODO: delete
-                        this.array[curRow][curCol].text.setText('');
-                        
+
+                        let newTilePos = this._tilePosition(curRow + shiftRow, curCol + shiftCol);
+                        this.array[curRow][curCol].destination = {
+                            x: newTilePos.x,
+                            y: newTilePos.y
+                        };
+                        this.animation.addMovement(this.array[curRow][curCol])
+
                         somethingMoved = true;
                     }
                 }
             }
         }
 
-        if (somethingMoved)
-            this.addNewTile();
-
-        this._reload();
+        if (somethingMoved) {
+            this._checkGameOver();
+            this.animation.doMove();
+        }
+        else {
+            this.canMove = true;
+        }
     }
 
     _fitToField(x, y) {
-        return ( x>=0 && x<4 ) && ( y>=0 && y<4 );
+        return (x >= 0 && x < 4) && (y >= 0 && y < 4);
     }
 
-    addNewTile () {
-        let emptyTiles = [];
-        for(let i = 0; i < 4; ++i) {
-            for(let j = 0; j < 4; ++j) {
-                if(this.array[i][j].num == 0) {
-                    emptyTiles.push( {
+    _findEmptyTiles() {
+        let tiles = [];
+        for (let i = 0; i < 4; ++i) {
+            for (let j = 0; j < 4; ++j) {
+                if (this.array[i][j].num == 0) {
+                    tiles.push({
                         row: i,
                         col: j
                     })
                 }
             }
         }
-        let newTileIndex = Phaser.Utils.Array.GetRandom(emptyTiles);
-        let newTile = this.array[newTileIndex.row][newTileIndex.col];
-        newTile.num = 2;
-        //TODO: delete
-        newTile.text.setText('2');
-        //newTile.sprite.visible = true;
+        return tiles;
     }
-    
-    _tilePosition(pos) {
-        return (this.sceneConfig.tileSize + this.sceneConfig.spacing) * ((pos < 0)? -pos : pos) +
-                        this.sceneConfig.tileSize/2 + this.sceneConfig.spacing;
+
+    _addNewTile() {
+        let newTileIndex = Phaser.Utils.Array.GetRandom(this.emptyTiles);
+        let newTile = this.array[newTileIndex.row][newTileIndex.col];
+        newTile.num = 1;
+        newTile.setFrame(0)
+        newTile.visible = false;
+        if (this.canAnimate) {
+            this.animation.doApperance(newTile);
+        }
+        else {
+            newTile.visible = true;
+        }
+    }
+
+    _position(pos) {
+        return (this.sceneConfig.tileSize + this.sceneConfig.spacing) * pos +
+            this.sceneConfig.tileSize / 2 + this.sceneConfig.spacing;
+    }
+
+    _tilePosition(i, j) {
+        return {
+            x: this._position(j),
+            y: this.sceneConfig.fieldX + this._position(i)
+        };
     }
 
     _init() {
         for (let i = 0; i < 4; ++i) {
             this.array[i] = [];
             for (let j = 0; j < 4; ++j) {
-                let tile = this.game.add.sprite(this._tilePosition(j),this._tilePosition(i), 'tile');
-                //TODO: delete
-                let text = this.game.add.text(this._tilePosition(j) - 20,this._tilePosition(i) - 20, '', {
-                    font: "bold 64px Arial",
-                    align: "center",
-                    color: "black",
-                })
-                tile.alpha = 0.5;// TODO 0
-                tile.visible = 0; // TODO 0
-                this.group.add(tile);
-                this.array[i][j] = {
-                    sprite: tile,
-                    num: 0,
-                    increased: false,
-                    //TODO: delete
-                    text: text
-                };
+                let tilePos = this._tilePosition(i, j);
+                let tile = this.mainScene.add.sprite(tilePos.x, tilePos.y, 'tiles');
+                tile.alpha = 1;
+                tile.visible = false;
+                tile.destination = { x: -1, y: -1 };
+                tile.num = 0;
+                tile.increased = false;
+                this.array[i][j] = tile;
             }
         }
+        this.emptyTiles = this._findEmptyTiles();
     }
+
+
 }

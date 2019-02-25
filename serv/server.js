@@ -2,10 +2,9 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 
-const index = "./rating";
+const index = "/rating";
 const ratingPath = "./rating.json";
 
-// TODO check json body
 app.use(express.json());
 
 //load index.html
@@ -32,6 +31,7 @@ fs.readFile(ratingPath, 'utf8', (err, content) => {
  *  GET REQUEST
 */
 app.get(index, (req, res) => {
+    console.log("[GET REQUEST] {"+ req.hostname+ "}");
     res.send(JSON.stringify(g_rating.table));
 });
 
@@ -39,11 +39,13 @@ app.get(index, (req, res) => {
  *  PUT REQUEST
 */
 app.put(index, (req, res) => {
-
+    
     if (!checkInPUT(req)) {
         res.status(400).send("Score and name are required and should be really yours!");
         return;
     }
+
+    console.log("[PUT REQUEST]: "+ JSON.stringify(req.body));
 
     const rating_obj = {
         "name" : req.body.name,
@@ -81,10 +83,10 @@ function checkInPUT(input) {
 
 
     let score = input.body.score && typeof(input.body.score) == 'number' &&
-                 input.body.score < 10000000 && input.body.score > 1;
+                 input.body.score < 3932101 && input.body.score > 1;
 
     let name = input.body.name && typeof(input.body.name) == 'string' &&
-                input.body.name.length > 0 && input.body.name.length <= 15;
+                input.body.name.length > 0 && input.body.name.length <= 10;
 
     return score && name;
 };
@@ -98,4 +100,4 @@ app.use((err, req, res, next) => {
 });
 
 /// exec server
-app.listen(3000, () => console.log("Listening on 3000"));
+app.listen(8000, () => console.log("Listening on 8000"));
