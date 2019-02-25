@@ -47,6 +47,7 @@ export default class MainScene extends Phaser.Scene {
             align: "center",
             color: "green"
         });
+        this.fieldManager.resume();
     }
 
     loseHandler(bscore) {

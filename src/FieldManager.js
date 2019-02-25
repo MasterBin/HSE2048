@@ -193,7 +193,7 @@ export default class FieldManager {
                     // set new score 
                     this.score += Math.pow(2,this.array[curRow + shiftRow][curCol + shiftCol].num);
 
-                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 12) { //WIN
+                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 11) { //WIN
                         this.state = gameState.WIN;
                         this.paused = true;
                     }
