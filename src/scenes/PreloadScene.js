@@ -6,7 +6,7 @@ export default class PreloadScene extends Phaser.Scene {
     }
 
 	preload() {
-        this.load.image('field','assets/newfield.png');
+        this.load.image('field','assets/field.png');
         this.load.image('rating','assets/rating.png');
 
         this.load.spritesheet('facebookButton', 'assets/facebook.png', {
