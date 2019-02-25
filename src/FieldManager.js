@@ -25,6 +25,8 @@ export default class FieldManager {
         this.state = gameState.USUAL;
 
         this.score = 0;
+
+        mainScene.events.on("onMoved", this.moveHandler, this);
     }
 
     start() {

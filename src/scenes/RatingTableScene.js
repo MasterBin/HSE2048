@@ -1,13 +1,13 @@
 import Button from "../Button.js";
 
 export default class RatingTableScene extends Phaser.Scene {
+
     constructor() {
         super("RatingTableScene");
     }
 
     init(mainScene) {
         this.mainScene = mainScene;
-     
     }
 
     create() {
@@ -21,22 +21,26 @@ export default class RatingTableScene extends Phaser.Scene {
         });
 
         this.names = [];
+        this.scores = []
         for (let i = 0; i < 10; ++i) {
-            this.names.push(this.add.text(185, 400 + i * 100, '', {
+            this.names.push(this.add.text(330, 430 + i * 100, '', {
                 font: "bold 48px Ayuthaya",
                 color: "#E3F2FD",
                 align: "center",
                 backgroundColor: "#00A3F7",
                 padding: { right: 6 }
-            }));
+            }).setOrigin(0.5));
+
+            this.scores.push(this.add.text(700, 430 + i * 100, '', {
+                font: "bold 48px Ayuthaya",
+                color: "black",
+                align: "center",
+                lineSpacing: 40
+            }).setOrigin(0.5));
         }
 
-        this.scores = this.add.text(600, 310, '', {
-            font: "bold 48px Ayuthaya",
-            color: "black",
-            align: "center",
-            lineSpacing: 40
-        });
+        
+        
 
 
         this.closeButton = new Button('closeButton', 871, 255, this);
@@ -51,14 +55,10 @@ export default class RatingTableScene extends Phaser.Scene {
 
     _reciveTableHandler(table) {
         this.loadingtext.setVisible(false);
-
-
-        let scoreString = '       \n';
         for (let i = 0; i < table.length; ++i) {
             this.names[i].setText(`${table[i].name}`);
-            scoreString += `${table[i].score}\n`;
+            this.scores[i].setText(`${table[i].score}`);
         }
-        this.scores.setText(scoreString);
     }
 
     _reset() {

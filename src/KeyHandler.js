@@ -5,7 +5,6 @@ export default class KeyHandler {
     constructor(mainScene, fieldManager) {
         this.mainScene = mainScene;
         mainScene.input.keyboard.on("keydown", this.keyPressedHandler, this);
-        mainScene.events.on("onMoved", fieldManager.moveHandler, fieldManager);
     }
 
     keyPressedHandler(key) {
@@ -31,11 +30,7 @@ export default class KeyHandler {
                 break;
         }
     }
-
-    _test(text) {
-        console.log(text);
-    }
-
+    
 
 }
 

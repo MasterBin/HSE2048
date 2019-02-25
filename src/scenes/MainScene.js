@@ -10,27 +10,23 @@ const sceneConfig = {
     movingSpeed: 100
 };
 
-//TODO: font
 const scoreConfig = {
-    x: 139,
-    y: 220,
-    text: '       \n#######',
+    x: 181,
+    y: 303,
+    text: '0',
     style: {
-        font: "bold 48px 'Fedra Sans'",
-        color: "#00A3F7",
-        align: "center"
+        font: "bold 48px Ayuthaya",
+        color: "#00A3F7"
     }
 };
 
-//TODO: font
 const bestScoreConfig = {
-    x: 446,
-    y: 220,
-    text: '       \n#######',
+    x: 532,
+    y: 303,
+    text: '########',
     style: { 
-        font: "bold 48px 'Fedra Sans'",
-        color: "00A3F7",
-        align: "center"
+        font: "bold 48px Ayuthaya",
+        color: "#00A3F7"
     }
 };
 
@@ -46,17 +42,17 @@ export default class MainScene extends Phaser.Scene {
     }
 
     scoreChanged (value) {
-        this.scoreText.setText('       \n'+value);
+        this.scoreText.setText(value);
     }
 
     bestScoreChanged (value) {
-        this.bestScoreText.setText('       \n'+value);
+        this.bestScoreText.setText(value);
     }
 
     init_Scores() {
-        this.scoreText = this.make.text(scoreConfig);
+        this.scoreText = this.make.text(scoreConfig).setOrigin(0.5);
         this.events.on('onScoreChanged', this.scoreChanged, this);
-        this.bestScoreText = this.make.text(bestScoreConfig);
+        this.bestScoreText = this.make.text(bestScoreConfig).setOrigin(0.5);
         this.events.on('onBestScoreChanged', this.bestScoreChanged, this);
     }
 
