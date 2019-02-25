@@ -34,6 +34,7 @@ export default class FieldManager {
             this.started = true;
             this._init();
             this._addNewTile();
+            this._findEmptyTiles();
             this._addNewTile();
             this.sendScore();
         }
