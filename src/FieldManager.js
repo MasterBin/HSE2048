@@ -66,6 +66,9 @@ export default class FieldManager {
             this.score = 0;
             this.sendScore();
         }
+
+        if (this.paused)
+            this.paused = false;
     }
 
     sendScore () {
@@ -74,22 +77,15 @@ export default class FieldManager {
 
     // TODO
     GameLose() {
-        this.mainScene.add.text(250, 250, "LOSE", {
-            font: "bold 128px Arial",
-            align: "center",
-            color: "red",
-            align: "center"
-        });
+        this.mainScene.events.emit('onGameLose', this.score);
+        this.state = gameState.USUAL;
     }
 
     // TODO
     GameWin() {
-        this.mainScene.add.text(250, 250, "WIN", {
-            font: "bold 128px Arial",
-            align: "center",
-            color: "green",
-            align: "center"
-        });
+        this.mainScene.events.emit('onGameWin');
+        this.state = gameState.USUAL;
+        //вызывается сцена проигрыша 
     }
 
 

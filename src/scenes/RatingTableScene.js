@@ -21,7 +21,7 @@ export default class RatingTableScene extends Phaser.Scene {
         });
 
         this.names = [];
-        this.scores = []
+        this.scores = [];
         for (let i = 0; i < 10; ++i) {
             this.names.push(this.add.text(330, 430 + i * 100, '', {
                 font: "bold 48px Ayuthaya",
@@ -38,10 +38,6 @@ export default class RatingTableScene extends Phaser.Scene {
                 lineSpacing: 40
             }).setOrigin(0.5));
         }
-
-        
-        
-
 
         this.closeButton = new Button('closeButton', 871, 255, this);
 

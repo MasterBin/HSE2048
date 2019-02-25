@@ -41,14 +41,11 @@ export default class KeyHandler {
             
             if(swipeNormal.x > 0.8) {
                 this.mainScene.events.emit("onMoved", 1, 0);
-            }
-            if(swipeNormal.x < -0.8) {
+            }else if(swipeNormal.x < -0.8) {
                 this.mainScene.events.emit("onMoved", -1, 0);
-            }
-            if(swipeNormal.y > 0.8) {
+            }else if(swipeNormal.y > 0.8) {
                 this.mainScene.events.emit("onMoved", 0, 1);
-            }
-            if(swipeNormal.y < -0.8) {
+            }else if(swipeNormal.y < -0.8) {
                 this.mainScene.events.emit("onMoved", 0, -1);
             }
         }
@@ -56,6 +53,4 @@ export default class KeyHandler {
     
 
 }
-
-//TODO: add swipes
 
