@@ -10,10 +10,6 @@ export default class RatingTableScene extends Phaser.Scene {
      
     }
 
-    wake() {
-        console.log("WAKE");
-    }
-
     create() {
         this.mainScene.events.on('onRatingRecived', this._reciveTableHandler, this);
         this.add.image(500, 800, 'rating');
