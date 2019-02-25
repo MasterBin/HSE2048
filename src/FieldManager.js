@@ -61,6 +61,7 @@ export default class FieldManager {
                 }
             }
             this._addNewTile();
+            this._findEmptyTiles();
             this._redraw();
             this.score = 0;
             this.sendScore();
@@ -258,7 +259,7 @@ export default class FieldManager {
                 }
             }
         }
-        return tiles;
+        this.emptyTiles = tiles;
     }
 
     _addNewTile() {
@@ -301,7 +302,7 @@ export default class FieldManager {
                 this.array[i][j] = tile;
             }
         }
-        this.emptyTiles = this._findEmptyTiles();
+        this._findEmptyTiles();
     }
 
 
