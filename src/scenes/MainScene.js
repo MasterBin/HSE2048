@@ -52,15 +52,20 @@ export default class MainScene extends Phaser.Scene {
     }
 
     loseHandler(bscore) {
-        let current_best_score = parseInt(this.bestScoreText.text);
-        if (bscore > current_best_score) {
-            this.bestScoreText.setText(bscore);
-            //сохранение на локалку
-            if (this.storage.localStorageSupported())
-                this.storage.putToStarage(bscore, 'bestscore');
-            //TODO: отправка на сервер
-            this.backend.sendBestScore("LOL", bscore);
-        }
+        this.add.text(250, 250, "Lose, Please restart", {
+            font: "bold 128px Arial",
+            align: "center",
+            color: "green"
+        });
+        // let current_best_score = parseInt(this.bestScoreText.text);
+        // if (bscore > current_best_score) {
+        //     this.bestScoreText.setText(bscore);
+        //     //сохранение на локалку
+        //     if (this.storage.localStorageSupported())
+        //         this.storage.putToStarage(bscore, 'bestscore');
+        //     //TODO: отправка на сервер
+             this.backend.sendBestScore("LOL", bscore);
+        // }
     }
 
     scoreChanged(value) {
@@ -141,13 +146,14 @@ export default class MainScene extends Phaser.Scene {
 
     init_bestScore () {
         let bscore = null;
-        if (this.storage.localStorageSupported()) 
-             bscore = this.storage.getFromStorage('bestScore');
+        bscore = this.storage.getFromStorage("bestScore");
+        console.log(bscore);
+
+        this.fieldManager.bestScore = (bscore == null ? 0 : bscore);
         
-        if (bscore != null)
-            this.bestScoreChanged(bscore);
-        else
-            this.bestScoreChanged(0);
+        console.log(this.fieldManager.bestScore);
+
+        this.bestScoreChanged(this.fieldManager.bestScore);
     }
 
     create() {
@@ -161,8 +167,6 @@ export default class MainScene extends Phaser.Scene {
 
         this.events.on('onGameLose', this.loseHandler, this);
         this.events.on('onGameWin', this.winHandler, this);
-        
-        this.init_bestScore();
 
         this.fieldManager.start();
     }

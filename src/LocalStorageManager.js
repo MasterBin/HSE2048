@@ -37,10 +37,11 @@ export default class LocalStorageManager {
 
         try {
             var storage = window.localStorage;
-            this.storage.setItem(testKey, "1");
-            this.storage.removeItem(testKey);
+            storage.setItem(testKey, "1");
+            storage.removeItem(testKey);
             return true;
         } catch (error) {
+            console.log("fuck");
             return false;
         }
     }
