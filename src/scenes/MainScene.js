@@ -2,6 +2,7 @@ import FieldManager from "../FieldManager.js";
 import KeyHandler from "../KeyHandler.js";
 import BackEnd from "../BackEnd.js";
 import Button from "../Button.js";
+import LocalStorageManager from "../LocalStorageManager.js";
 
 const sceneConfig = {
     spacing: 16,
@@ -31,8 +32,8 @@ const bestScoreConfig = {
 };
 
 const shareConfig = {
-    title: "ssas",
-    text: "asasasa",
+    title: "HSE2048",
+    text: "Игра для настоящих вышкинцов!",
     url: window.location.href
 }
 
@@ -54,7 +55,9 @@ export default class MainScene extends Phaser.Scene {
         let current_best_score = parseInt(this.bestScoreText.text);
         if (bscore > current_best_score) {
             this.bestScoreText.setText(bscore);
-            //TODO: сохранение на локалку
+            //сохранение на локалку
+            if (this.storage.localStorageSupported())
+                this.storage.putToStarage(bscore, 'bestscore');
             //TODO: отправка на сервер
             this.backend.sendBestScore("LOL", bscore);
         }
@@ -136,18 +139,30 @@ export default class MainScene extends Phaser.Scene {
         }
     }
 
+    init_bestScore () {
+        let bscore = null;
+        if (this.storage.localStorageSupported()) 
+             bscore = this.storage.getFromStorage('bestScore');
+        
+        if (bscore != null)
+            this.bestScoreChanged(bscore);
+        else
+            this.bestScoreChanged(0);
+    }
+
     create() {
         this.fieldManager = new FieldManager(this, sceneConfig);
         this.keyHandler = new KeyHandler(this, this.fieldManager);
         this.backend = new BackEnd(this);
+        this.storage = new LocalStorageManager();
 
         this.init_Scores();
         this.init_Buttons();
 
         this.events.on('onGameLose', this.loseHandler, this);
         this.events.on('onGameWin', this.winHandler, this);
-
-        this.bestScoreChanged(/*TODO:получить бест скоре из локалки*/0);
+        
+        this.init_bestScore();
 
         this.fieldManager.start();
     }

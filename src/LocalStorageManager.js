@@ -52,6 +52,6 @@ export default class LocalStorageManager {
 
     getFromStorage(name){ // name должно быть из localStorageKey
         var objectJson = this.storage.getItem(name);
-        return stateJSON ? JSON.parse(objectJson) : null;
+        return objectJson ? JSON.parse(objectJson) : null;
     }
 }
