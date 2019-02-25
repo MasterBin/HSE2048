@@ -94,7 +94,7 @@ export default class FieldManager {
 
 
     _checkGameOver() {
-        this.emptyTiles = this._findEmptyTiles();
+        this._findEmptyTiles();
         if (this.emptyTiles.length > 1) {
             return;
         }
