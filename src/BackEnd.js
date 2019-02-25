@@ -30,7 +30,7 @@ export default class BackEnd {
     }
 
     sendResult(result, async = true) {
-        if (this.xhrPUT.readyState == 0) {
+        if (this.xhrPUT.readyState == 0 || this.xhrPUT.readyState == 4) {
             this.xhrPUT.open('put', ratingURL, async);
             this.xhrPUT.setRequestHeader("Content-Type", "application/json");
             this.xhrPUT.send(JSON.stringify(result));
@@ -38,7 +38,7 @@ export default class BackEnd {
     }
 
     reciveRating(async = true) {
-        if (this.xhrGET.readyState == 0) {
+        if (this.xhrGET.readyState == 0 || this.xhrGET.readyState == 4) {
             console.log("recive");
             this.xhrGET.open('get', ratingURL, async);
             this.xhrGET.send();

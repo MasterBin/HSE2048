@@ -1,19 +1,21 @@
 import Button from "../Button.js";
 
 export default class RatingTableScene extends Phaser.Scene {
-    constructor () {
-        super ("RatingTableScene");
-        this.names = [];
-        this.scores;
-        this.closeButton;
+    constructor() {
+        super("RatingTableScene");
     }
 
-    init (mainScene) {
+    init(mainScene) {
         this.mainScene = mainScene;
-        this.mainScene.events.on('onRatingRecived', this._reciveTableHandler, this);
+     
+    }
+
+    wake() {
+        console.log("WAKE");
     }
 
     create() {
+        this.mainScene.events.on('onRatingRecived', this._reciveTableHandler, this);
         this.add.image(500, 800, 'rating');
 
         this.loadingtext = this.add.text(420, 290, 'Loading...', {
@@ -22,13 +24,14 @@ export default class RatingTableScene extends Phaser.Scene {
             color: "white"
         });
 
-        for (let i = 0; i < 10 ; ++i) {
-            this.names.push(this.add.text(185, 400+i*100, '', {
+        this.names = [];
+        for (let i = 0; i < 10; ++i) {
+            this.names.push(this.add.text(185, 400 + i * 100, '', {
                 font: "bold 48px Ayuthaya",
                 color: "#E3F2FD",
                 align: "center",
                 backgroundColor: "#00A3F7",
-                padding: { right: 6}
+                padding: { right: 6 }
             }));
         }
 
@@ -39,28 +42,31 @@ export default class RatingTableScene extends Phaser.Scene {
             lineSpacing: 40
         });
 
+
         this.closeButton = new Button('closeButton', 871, 255, this);
 
         this.closeButton.Up = () => {
             this.mainScene.fieldManager.resume();
             this.scene.resume('MainScene');
-            this.scene.stop('RatingTableScene');
-        } 
+            this.scene.sleep();
+        }
+
     }
 
-    _reciveTableHandler (table) {
+    _reciveTableHandler(table) {
         this.loadingtext.setVisible(false);
 
+
         let scoreString = '       \n';
-        for (let i = 0 ; i< table.length; ++i) {
+        for (let i = 0; i < table.length; ++i) {
             this.names[i].setText(`${table[i].name}`);
             scoreString += `${table[i].score}\n`;
         }
         this.scores.setText(scoreString);
-    }   
+    }
 
     _reset() {
-        for (let i = 0; i < 10 ; ++i) {
+        for (let i = 0; i < 10; ++i) {
             this.names[i].setVisible(false);
             this.scores[i].setVisible(false);
         }

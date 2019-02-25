@@ -65,9 +65,15 @@ export default class MainScene extends Phaser.Scene {
         //RATING BUTTON
         this.ratingButton = new Button('ratingButton', 810, 318, this);
         this.ratingButton.Up = () => {
-            this.scene.launch("RatingTableScene", this); 
+
+            if (!this.scene.isSleeping('RatingTableScene'))
+                this.scene.launch("RatingTableScene", this);  
+            else
+                this.scene.wake("RatingTableScene");
+                //this.scene.bringToTop("RatingTableScene");
             this.scene.pause('MainScene');
             this.fieldManager.pause();
+//            while (this.scene.isActive('RatingTableScene'))
             this.backend.reciveRating();
         };
 
