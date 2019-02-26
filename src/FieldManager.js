@@ -80,7 +80,7 @@ export default class FieldManager {
     }
 
     GameWin() {
-        this.mainScene.events.emit('onGameWin');
+        this.mainScene.events.emit('onGameWin', this.score);
         this.state = gameState.USUAL;
     }
 

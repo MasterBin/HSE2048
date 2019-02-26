@@ -52,8 +52,10 @@ export default class MainScene extends Phaser.Scene {
         //this.fieldManager.pause();
     }
 
-    winHandler() {
+    winHandler(bscore) {
         this.loadSceneOver('WinScene');
+        //TODO: сделать что-то с этим ужасом
+        this.backend.sendBestScore("LOL", this.fieldManager.score);
     }
 
     // TODO: вместо bestscore - наибольшее значение ячейки
@@ -82,7 +84,7 @@ export default class MainScene extends Phaser.Scene {
         // RATING BUTTON
         this.ratingButton = new Button('ratingButton', 810, 318, this);
         this.ratingButton.Up = () => {
-            loadSceneOver('RatingTableScene');
+            this.loadSceneOver('RatingTableScene');
             this.backend.reciveRating();
         };
 
