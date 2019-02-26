@@ -268,8 +268,9 @@ export default class FieldManager {
     _addNewTile() {
         let newTileIndex = Phaser.Utils.Array.GetRandom(this.emptyTiles);
         let newTile = this.array[newTileIndex.row][newTileIndex.col];
-        newTile.num = 1;
-        newTile.setFrame(0)
+        var value = Math.random() < 0.85 ? 1 : 2;
+        newTile.num = value;
+        newTile.setFrame(newTile.num - 1);
         newTile.visible = false;
         if (this.canAnimate) {
             this.animation.doApperance(newTile);
