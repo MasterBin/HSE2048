@@ -1,6 +1,8 @@
 import MainScene from './scenes/MainScene.js';
 import PreloadScene from './scenes/PreloadScene.js';
 import RatingTableScene from './scenes/RatingTableScene.js';
+import LoseScene from './scenes/LoseScene.js';
+import WinScene from './scenes/winScene.js';
 
 const config = {
     width: 1000,
@@ -8,7 +10,7 @@ const config = {
     type: Phaser.AUTO,
     backgroundColor: 0x86bcc5,
     physics: Phaser.ARCADE,
-    scene: [ PreloadScene, MainScene, RatingTableScene]
+    scene: [ PreloadScene, MainScene, RatingTableScene, LoseScene, WinScene ]
 };
 
 function resize() {

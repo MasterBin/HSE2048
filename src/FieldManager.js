@@ -13,7 +13,6 @@ export default class FieldManager {
         this.sceneConfig = sceneConfig;
         this.mainScene = mainScene;
         this.animation = new FieldAnimation(this, mainScene);
-        mainScene.add.image(500, 760, 'field');
 
         this.array = [];
         this.paused = false;
@@ -43,15 +42,13 @@ export default class FieldManager {
     }
 
     pause() {
-        if (this.started) {
+        if (this.started)
             this.paused = true;
-        }
     }
 
     resume() {
-        if (this.started) {
+        if (this.started) 
             this.paused = false;
-        }
     }
 
     restart() {
@@ -76,18 +73,15 @@ export default class FieldManager {
     sendScore () {
         this.mainScene.events.emit('onScoreChanged', this.score);
     }
-
-    // TODO
+ 
     GameLose() {
         this.mainScene.events.emit('onGameLose', this.score);
         this.state = gameState.USUAL;
     }
 
-    // TODO
     GameWin() {
         this.mainScene.events.emit('onGameWin');
         this.state = gameState.USUAL;
-        //вызывается сцена проигрыша 
     }
 
 
@@ -200,7 +194,7 @@ export default class FieldManager {
                         this.mainScene.storage.putToStarage(this.bestScore, "bestScore")
                     }
 
-                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 11) { //WIN
+                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 3) { //WIN
                         this.state = gameState.WIN;
                         this.paused = true;
                     }

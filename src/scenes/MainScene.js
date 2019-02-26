@@ -42,30 +42,25 @@ export default class MainScene extends Phaser.Scene {
         super("MainScene");
     }
 
-    winHandler() {
-        this.add.text(250, 250, "WIN", {
-            font: "bold 128px Arial",
-            align: "center",
-            color: "green"
-        });
-        this.fieldManager.resume();
+    loadSceneOver (sceneName) {
+        if (!this.scene.isSleeping(sceneName))
+                this.scene.launch(sceneName, this);
+            else
+                this.scene.wake(sceneName);
+
+        this.scene.pause('MainScene');
+        //this.fieldManager.pause();
     }
 
+    winHandler() {
+        this.loadSceneOver('WinScene');
+    }
+
+    // TODO: вместо bestscore - наибольшее значение ячейки
     loseHandler(bscore) {
-        this.add.text(250, 250, "Lose, Please restart", {
-            font: "bold 128px Arial",
-            align: "center",
-            color: "green"
-        });
-        // let current_best_score = parseInt(this.bestScoreText.text);
-        // if (bscore > current_best_score) {
-        //     this.bestScoreText.setText(bscore);
-        //     //сохранение на локалку
-        //     if (this.storage.localStorageSupported())
-        //         this.storage.putToStarage(bscore, 'bestscore');
-        //     //TODO: отправка на сервер
-             this.backend.sendBestScore("LOL", bscore);
-        // }
+        this.loadSceneOver('LoseScene');
+        //TODO: nickname
+        this.backend.sendBestScore("LOL", bscore);
     }
 
     scoreChanged(value) {
@@ -87,12 +82,7 @@ export default class MainScene extends Phaser.Scene {
         // RATING BUTTON
         this.ratingButton = new Button('ratingButton', 810, 318, this);
         this.ratingButton.Up = () => {
-            if (!this.scene.isSleeping('RatingTableScene'))
-                this.scene.launch("RatingTableScene", this);
-            else
-                this.scene.wake("RatingTableScene");
-            this.scene.pause('MainScene');
-            this.fieldManager.pause();
+            loadSceneOver('RatingTableScene');
             this.backend.reciveRating();
         };
 
@@ -147,16 +137,13 @@ export default class MainScene extends Phaser.Scene {
     init_bestScore () {
         let bscore = null;
         bscore = this.storage.getFromStorage("bestScore");
-        console.log(bscore);
-
         this.fieldManager.bestScore = (bscore == null ? 0 : bscore);
-        
-        console.log(this.fieldManager.bestScore);
-
         this.bestScoreChanged(this.fieldManager.bestScore);
     }
 
     create() {
+        
+        this.add.image(500, 760, 'field');
         this.fieldManager = new FieldManager(this, sceneConfig);
         this.keyHandler = new KeyHandler(this, this.fieldManager);
         this.backend = new BackEnd(this);
