@@ -147,13 +147,16 @@ export default class FieldManager {
 
 
     moveHandler(x, y) {
-        if (!this.canMove)
+        if (!this.canMove){
             return;
-        
-        this.canMove = false;
+        }
+    
 
-        if (!this.started || this.paused)
+        if (!this.started || this.paused){
             return;
+        }
+
+        this.canMove = false;
 
         this.animation.stop();
 
