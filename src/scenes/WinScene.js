@@ -45,8 +45,6 @@ export default class WinScene extends Phaser.Scene {
 
         this.endGameButton.Up = () => {
             this.mainScene.fieldManager.restart();
-
-            
             this.scene.resume('MainScene');
             this.scene.sleep();
         }

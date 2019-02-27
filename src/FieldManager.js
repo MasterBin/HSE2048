@@ -31,7 +31,7 @@ export default class FieldManager {
     start() {
         if (!this.started) {
 
-            this.mainScene.init_bestScore();
+            this.mainScene.ui.init_bestScore();
             this.started = true;
             this._init();
             this._addNewTile();
@@ -191,13 +191,13 @@ export default class FieldManager {
                     
                     // set new score 
                     this.score += Math.pow(2,this.array[curRow + shiftRow][curCol + shiftCol].num);
-                    if(this.score > this.bestScore){
+                    if(this.score > this.bestScore) {
                         this.bestScore = this.score;
-                        this.mainScene.bestScoreChanged(this.bestScore);
+                        this.mainScene.ui.bestScoreChanged(this.bestScore);
                         this.mainScene.storage.putToStarage(this.bestScore, "bestScore")
                     }
 
-                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 3) { //WIN
+                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 11) { //WIN
                         this.state = gameState.WIN;
                         this.paused = true;
                     }
