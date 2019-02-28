@@ -7,9 +7,11 @@ import WinScene from './scenes/winScene.js';
 const config = {
     width: 1000,
     height: 1520,
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     backgroundColor: 0x86bcc5,
     physics: Phaser.ARCADE,
+    parent: "HSE2048",
+    canvas: document.getElementById('hse2048_canvas'),
     scene: [ PreloadScene, MainScene, RatingTableScene, LoseScene, WinScene ]
 };
 
@@ -34,7 +36,7 @@ var game;
 window.onload = function () {
     game = new Phaser.Game(config);
     window.focus();
-    resize();
-    window.addEventListener("resize", resize, false);
+    //resize();
+    //window.addEventListener("resize", resize, false);
 };
 

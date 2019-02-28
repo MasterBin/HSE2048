@@ -52,5 +52,29 @@ export default class MainScene extends Phaser.Scene {
         this.events.on('onGameWin', this.winHandler, this);
 
         this.fieldManager.start();
+
+        this.input = new CanvasInput({
+            canvas: document.getElementById('hse2048_canvas'),
+            fontSize: 18,
+            fontFamily: 'Arial',
+            fontColor: '#212121',
+            fontWeight: 'bold',
+            width: 300,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#000',
+            borderRadius: 3,
+            boxShadow: '1px 1px 0px #fff',
+            innerShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
+            placeHolder: 'Enter message here...'
+        });
+        
+        this.scene.texture.createCanvas("textInput", 300, 50);
+        
+        this.input.focus();
+    }
+
+    update() {
+        this.input.render();
     }
 }
