@@ -11,6 +11,11 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image('lose', 'assets/lose.png');
         this.load.image('win', 'assets/win.png');
 
+        this.load.spritesheet('randomButton', 'assets/diceButton.png', {
+            frameWidth: 80,
+            frameHeight: 80
+        });
+
         this.load.spritesheet('continueButton', 'assets/continuebutton.png', {
             frameWidth: 300,
             frameHeight: 80

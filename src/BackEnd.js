@@ -1,17 +1,30 @@
-const ratingURL = window.location.href+ 'rating';
+const ratingURL = window.location.href + 'rating';
+const nameURL = window.location.href + 'name';
 
 export default class BackEnd {
     constructor(mainScene) {
-        this.xhrGET = new XMLHttpRequest();
+        this.xhrGETrating = new XMLHttpRequest();
+        this.xhrGETname = new XMLHttpRequest();
         this.xhrPUT = new XMLHttpRequest();
 
-        this.xhrGET.onreadystatechange = () => {
-            if (this.xhrGET.readyState == 4) {
-                if (this.xhrGET.status == 200) {
-                    mainScene.events.emit('onRatingRecived', JSON.parse(this.xhrGET.responseText));
+        this.xhrGETrating.onreadystatechange = () => {
+            if (this.xhrGETrating.readyState == 4) {
+                if (this.xhrGETrating.status == 200) {
+                    mainScene.events.emit('onRatingRecived', JSON.parse(this.xhrGETrating.responseText));
                 }
-                else if (this.xhrGET.status == 400) {
-                    console.log(this.xhrGET.responseText);
+                else if (this.xhrGETrating.status == 400) {
+                    console.log(this.xhrGETrating.responseText);
+                }
+            }
+        }
+
+        this.xhrGETname.onreadystatechange = () => {
+            if (this.xhrGETname.readyState == 4) {
+                if (this.xhrGETname.status == 200) {
+                    mainScene.events.emit('onNameRecived', this.xhrGETname.responseText);
+                }
+                else if (this.xhrGETname.status == 400) {
+                    console.log(this.xhrGETname.responseText);
                 }
             }
         }
@@ -41,10 +54,16 @@ export default class BackEnd {
     }
 
     reciveRating(async = true) {
-        if (this.xhrGET.readyState == 0 || this.xhrGET.readyState == 4) {
-            console.log("recive");
-            this.xhrGET.open('get', ratingURL, async);
-            this.xhrGET.send();
+        if (this.xhrGETrating.readyState == 0 || this.xhrGETrating.readyState == 4) {
+            this.xhrGETrating.open('get', ratingURL, async);
+            this.xhrGETrating.send();
+        }
+    }
+
+    reciveName(async = true) {
+        if (this.xhrGETname.readyState == 0 || this.xhrGETname.readyState == 4) {
+            this.xhrGETname.open('get', nameURL, async);
+            this.xhrGETname.send();
         }
     }
 

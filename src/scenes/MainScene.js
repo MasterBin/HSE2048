@@ -1,7 +1,6 @@
 import FieldManager from "../FieldManager.js";
 import KeyHandler from "../KeyHandler.js";
 import BackEnd from "../BackEnd.js";
-import Button from "../Button.js";
 import LocalStorageManager from "../LocalStorageManager.js";
 import UI from "../UI.js";
 
@@ -24,13 +23,12 @@ export default class MainScene extends Phaser.Scene {
                 this.scene.wake(sceneName);
 
         this.scene.pause('MainScene');
-        //this.fieldManager.pause();
     }
 
     winHandler(bscore) {
         this.loadSceneOver('WinScene');
         //TODO: сделать что-то с этим ужасом
-        this.backend.sendBestScore("LOL", this.fieldManager.score);
+        this.backend.sendBestScore(this.UI.inputField.getName(), this.fieldManager.score);
     }
 
     // TODO: вместо bestscore - наибольшее значение ячейки
@@ -53,28 +51,21 @@ export default class MainScene extends Phaser.Scene {
 
         this.fieldManager.start();
 
-        // this.input = new CanvasInput({
-        //     canvas: document.getElementById('hse2048_canvas'),
-        //     fontSize: 18,
-        //     fontFamily: 'Arial',
-        //     fontColor: '#212121',
-        //     fontWeight: 'bold',
-        //     width: 300,
-        //     padding: 8,
-        //     borderWidth: 1,
-        //     borderColor: '#000',
-        //     borderRadius: 3,
-        //     boxShadow: '1px 1px 0px #fff',
-        //     innerShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
-        //     placeHolder: 'Enter message here...'
-        // });
-        
-        // this.textures.createCanvas("textInput", 300, 50);
-        
-        // this.input.focus();
-    }
 
-    // update() {
-    //     this.input.render();
-    // }
+
+
+        // var lol = document.getElementById("textinput");
+        // var wid = 380 + "px";
+        // lol.style.width = wid;
+        // lol.style.height = "50px";
+        // lol.style.top = "1820px";
+        // lol.style.left = "725px";
+        // lol.style.border = "0px";
+        // lol.style.fontSize = "40px";
+        // lol.style.background = "#86bcc5";
+
+
+        // // lol.style.zIndex = 20;
+        // console.log(lol);
+    }
 }

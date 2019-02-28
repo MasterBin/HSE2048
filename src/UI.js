@@ -1,4 +1,5 @@
 import Button from "./Button.js";
+import InputField from "./InputField.js";
 
 const scoreConfig = {
     x: 181,
@@ -29,11 +30,19 @@ const shareConfig = {
 export default class UI {
     constructor (mainScene) {
         this.mainScene = mainScene;
+        this.inputField = new InputField(this.mainScene);
+        
         this._init_Buttons();
         this._init_Scores();
     }
 
     _init_Buttons() {
+
+        this.randomNameButton = new Button('randomButton', 939, 1456, this.mainScene);
+        this.randomNameButton.Up = () => {
+              this.inputField.setRandomName();
+        };
+
         // RATING BUTTON
         this.ratingButton = new Button('ratingButton', 810, 318, this.mainScene);
         this.ratingButton.Up = () => {
@@ -42,14 +51,14 @@ export default class UI {
         };
 
         // RESTART BUTTON
-        this.mainScene.restartButton = new Button('restartButton', 926, 318, this.mainScene);
-        this.mainScene.restartButton.Up = () => {
+        this.restartButton = new Button('restartButton', 926, 318, this.mainScene);
+        this.restartButton.Up = () => {
             this.mainScene.fieldManager.restart();
         };
 
         // FACEBOOK BUTTON
-        this.mainScene.facebookButton = new Button('facebookButton', 64, 1455, this.mainScene);
-        this.mainScene.facebookButton.Up = () => {
+        this.facebookButton = new Button('facebookButton', 64, 1455, this.mainScene);
+        this.facebookButton.Up = () => {
             let url = 'http://www.facebook.com/sharer.php?s=100';
             url += '&p[title]=' + encodeURIComponent(shareConfig.title);
             url += '&p[summary]=' + encodeURIComponent(shareConfig.text);
@@ -110,7 +119,4 @@ export default class UI {
     bestScoreChanged(value) {
         this.bestScoreText.setText(value);
     }
-
-    
-
 }

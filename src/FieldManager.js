@@ -26,20 +26,6 @@ export default class FieldManager {
         this.score = 0;
 
         mainScene.events.on("onMoved", this.moveHandler, this);
-
-        var lol = document.getElementById("textinput");
-        var wid = 380 + "px";
-        lol.style.width = wid;
-        lol.style.height = "50px";
-        lol.style.top = "1820px";
-        lol.style.left = "725px";
-        lol.style.border = "0px";
-        lol.style.fontSize = "40px";
-        lol.style.background = "#86bcc5";
-
-
-        // lol.style.zIndex = 20;
-        console.log(lol);
     }
 
     start() {
