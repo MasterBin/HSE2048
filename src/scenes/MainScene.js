@@ -28,13 +28,13 @@ export default class MainScene extends Phaser.Scene {
     winHandler(bscore) {
         this.loadSceneOver('WinScene');
         //TODO: сделать что-то с этим ужасом
-        this.backend.sendBestScore(this.UI.inputField.getText(), this.fieldManager.score);
+        this.backend.sendBestScore(this.ui.inputField.getText(), this.fieldManager.score);
     }
 
     // TODO: вместо bestscore - наибольшее значение ячейки
     loseHandler(bscore) {
         this.loadSceneOver('LoseScene');
-        this.backend.sendBetScore(this.UI.inputField.getText(), bscore);
+        this.backend.sendBestScore(this.ui.inputField.getText(), bscore);
     }
 
     create() {
