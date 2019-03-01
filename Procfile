@@ -1,1 +1,0 @@
-web: serv/server.js
