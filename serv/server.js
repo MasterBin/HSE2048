@@ -2,6 +2,8 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 
+const PORT = process.env.PORT || 8000;
+
 const index = "/rating";
 const ratingPath = "./rating.json";
 
@@ -109,4 +111,4 @@ app.use((err, req, res, next) => {
 });
 
 /// exec server
-app.listen(8000, () => console.log("Listening on 8000"));
+app.listen(PORT, () => console.log("Listening on 8000"));
