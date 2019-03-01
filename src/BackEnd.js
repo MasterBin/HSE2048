@@ -8,7 +8,6 @@ export default class BackEnd {
         this.xhrGET.onreadystatechange = () => {
             if (this.xhrGET.readyState == 4) {
                 if (this.xhrGET.status == 200) {
-                    //TODO
                     mainScene.events.emit('onRatingRecived', JSON.parse(this.xhrGET.responseText));
                 }
                 else if (this.xhrGET.status == 400) {
@@ -29,11 +28,15 @@ export default class BackEnd {
         }
     }
 
-    sendResult(result, async = true) {
+    sendBestScore(name, bscore, async = true) {
         if (this.xhrPUT.readyState == 0 || this.xhrPUT.readyState == 4) {
             this.xhrPUT.open('put', ratingURL, async);
             this.xhrPUT.setRequestHeader("Content-Type", "application/json");
-            this.xhrPUT.send(JSON.stringify(result));
+            this.xhrPUT.send(JSON.stringify(
+            { 
+                name: name,
+                score: bscore
+            }));
         }
     }
 

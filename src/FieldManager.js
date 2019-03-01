@@ -13,7 +13,6 @@ export default class FieldManager {
         this.sceneConfig = sceneConfig;
         this.mainScene = mainScene;
         this.animation = new FieldAnimation(this, mainScene);
-        mainScene.add.image(500, 760, 'field');
 
         this.array = [];
         this.paused = false;
@@ -31,24 +30,25 @@ export default class FieldManager {
 
     start() {
         if (!this.started) {
+
+            this.mainScene.ui.init_bestScore();
             this.started = true;
             this._init();
             this._addNewTile();
+            this._findEmptyTiles();
             this._addNewTile();
             this.sendScore();
         }
     }
 
     pause() {
-        if (this.started) {
+        if (this.started)
             this.paused = true;
-        }
     }
 
     resume() {
-        if (this.started) {
+        if (this.started) 
             this.paused = false;
-        }
     }
 
     restart() {
@@ -60,39 +60,33 @@ export default class FieldManager {
                 }
             }
             this._addNewTile();
+            this._findEmptyTiles();
             this._redraw();
             this.score = 0;
             this.sendScore();
         }
+
+        if (this.paused)
+            this.paused = false;
     }
 
     sendScore () {
         this.mainScene.events.emit('onScoreChanged', this.score);
     }
-
-    // TODO
+ 
     GameLose() {
-        this.mainScene.add.text(250, 250, "LOSE", {
-            font: "bold 128px Arial",
-            align: "center",
-            color: "red",
-            align: "center"
-        });
+        this.mainScene.events.emit('onGameLose', this.score);
+        this.state = gameState.USUAL;
     }
 
-    // TODO
     GameWin() {
-        this.mainScene.add.text(250, 250, "WIN", {
-            font: "bold 128px Arial",
-            align: "center",
-            color: "green",
-            align: "center"
-        });
+        this.mainScene.events.emit('onGameWin', this.score);
+        this.state = gameState.USUAL;
     }
 
 
     _checkGameOver() {
-        this.emptyTiles = this._findEmptyTiles();
+        this._findEmptyTiles();
         if (this.emptyTiles.length > 1) {
             return;
         }
@@ -153,13 +147,16 @@ export default class FieldManager {
 
 
     moveHandler(x, y) {
-        if (!this.canMove)
+        if (!this.canMove){
             return;
-        
-        this.canMove = false;
+        }
+    
 
-        if (!this.started || this.paused)
+        if (!this.started || this.paused){
             return;
+        }
+
+        this.canMove = false;
 
         this.animation.stop();
 
@@ -194,8 +191,13 @@ export default class FieldManager {
                     
                     // set new score 
                     this.score += Math.pow(2,this.array[curRow + shiftRow][curCol + shiftCol].num);
+                    if(this.score > this.bestScore) {
+                        this.bestScore = this.score;
+                        this.mainScene.ui.bestScoreChanged(this.bestScore);
+                        this.mainScene.storage.putToStarage(this.bestScore, "bestScore")
+                    }
 
-                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 12) { //WIN
+                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 11) { //WIN
                         this.state = gameState.WIN;
                         this.paused = true;
                     }
@@ -257,14 +259,15 @@ export default class FieldManager {
                 }
             }
         }
-        return tiles;
+        this.emptyTiles = tiles;
     }
 
     _addNewTile() {
         let newTileIndex = Phaser.Utils.Array.GetRandom(this.emptyTiles);
         let newTile = this.array[newTileIndex.row][newTileIndex.col];
-        newTile.num = 1;
-        newTile.setFrame(0)
+        var value = Math.random() < 0.85 ? 1 : 2;
+        newTile.num = value;
+        newTile.setFrame(newTile.num - 1);
         newTile.visible = false;
         if (this.canAnimate) {
             this.animation.doApperance(newTile);
@@ -300,7 +303,7 @@ export default class FieldManager {
                 this.array[i][j] = tile;
             }
         }
-        this.emptyTiles = this._findEmptyTiles();
+        this._findEmptyTiles();
     }
 
 

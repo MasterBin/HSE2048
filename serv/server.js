@@ -13,7 +13,7 @@ app.use(express.static('../'));
 // Rating object
 // Here we will be store all data.
 var g_rating = {
-    "table" : [],
+    "table": [],
     "max_players": 10
 };
 var indexHtml;
@@ -31,7 +31,7 @@ fs.readFile(ratingPath, 'utf8', (err, content) => {
  *  GET REQUEST
 */
 app.get(index, (req, res) => {
-    console.log("[GET REQUEST] {"+ req.hostname+ "}");
+    console.log("[GET REQUEST] {" + req.hostname + "}");
     res.send(JSON.stringify(g_rating.table));
 });
 
@@ -39,40 +39,49 @@ app.get(index, (req, res) => {
  *  PUT REQUEST
 */
 app.put(index, (req, res) => {
-    
+
     if (!checkInPUT(req)) {
         res.status(400).send("Score and name are required and should be really yours!");
+        console.log(JSON.stringify(req.body));
         return;
     }
 
-    console.log("[PUT REQUEST]: "+ JSON.stringify(req.body));
+    console.log("[PUT REQUEST]: " + JSON.stringify(req.body));
 
     const rating_obj = {
-        "name" : req.body.name,
-        "score" : req.body.score
+        "name": req.body.name,
+        "score": req.body.score
     };
 
-
-    for (let i=0; i< g_rating.table.length; ++i) 
+    for (let i = 0; i < g_rating.table.length; ++i)
         if (g_rating.table[i].score <= rating_obj.score) {
 
             g_rating.table.splice(i, 0, rating_obj);
             if (g_rating.table.length > g_rating.max_players) {
                 g_rating.table.pop();
             }
-            res.send("Added!\n"+JSON.stringify(g_rating.table));
+            res.send("Added!\n" + JSON.stringify(g_rating.table));
+            writeToDisk();
             return;
         }
 
     if (g_rating.table.length < g_rating.max_players) {
-        
+
         g_rating.table.push(rating_obj);
-        res.send("Added!\n"+JSON.stringify(g_rating.table));
+        res.send("Added!\n" + JSON.stringify(g_rating.table));
+        writeToDisk();
         return;
     }
-        
-    res.send("Doesn't fit!\n"+JSON.stringify(g_rating.table));
+
+    res.send("Doesn't fit!\n" + JSON.stringify(g_rating.table));
 });
+
+function writeToDisk() {
+    fs.writeFile(ratingPath, JSON.stringify(g_rating.table), (err) => {
+        if (err)
+            console.log("Can't load " + ratingPath);
+    });
+}
 
 /* 
  *  Check input for put request
@@ -82,11 +91,11 @@ function checkInPUT(input) {
         return false;
 
 
-    let score = input.body.score && typeof(input.body.score) == 'number' &&
-                 input.body.score < 3932101 && input.body.score > 1;
+    let score = input.body.score && typeof (input.body.score) == 'number' &&
+        input.body.score < 3932101 && input.body.score > 1 && input.body.score % 2 == 0;
 
-    let name = input.body.name && typeof(input.body.name) == 'string' &&
-                input.body.name.length > 0 && input.body.name.length <= 10;
+    let name = input.body.name && typeof (input.body.name) == 'string' &&
+        input.body.name.length > 0 && input.body.name.length <= 10;
 
     return score && name;
 };
