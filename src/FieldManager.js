@@ -22,6 +22,8 @@ export default class FieldManager {
         this.toIncrease = 0;
         this.emptyTiles = [];
         this.state = gameState.USUAL;
+        this.notWin = true;
+        this.newTileNum = 1;
 
         this.score = 0;
 
@@ -59,6 +61,7 @@ export default class FieldManager {
                     this.array[i][j].num = 0;
                 }
             }
+            this.notWin = true;
             this._addNewTile();
             this._findEmptyTiles();
             this._redraw();
@@ -96,7 +99,7 @@ export default class FieldManager {
             2: { x: -1, y: 0 }, // Left
             3: { x: 1, y: 0 }  // Right
         }
-        this.array[this.emptyTiles[0].row][this.emptyTiles[0].col].num = 1; // Temporary change for this tile 
+        this.array[this.emptyTiles[0].row][this.emptyTiles[0].col].num = this.newTileNum; // Temporary change for this tile 
 
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
@@ -113,7 +116,6 @@ export default class FieldManager {
             }
         }
 
-        //TODO Проверить появление 4 
         
         this.state = gameState.LOSE;
         this.paused = true;
@@ -200,9 +202,10 @@ export default class FieldManager {
                         this.mainScene.storage.putToStarage(this.bestScore, "bestScore")
                     }
 
-                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 11) { //WIN
+                    if (this.array[curRow + shiftRow][curCol + shiftCol].num == 11 && this.notWin) { //WIN
                         this.state = gameState.WIN;
                         this.paused = true;
+                        this.notWin = false;
                     }
 
                     this.array[curRow + shiftRow][curCol + shiftCol].increased = true;
@@ -238,6 +241,7 @@ export default class FieldManager {
         }
 
         if (somethingMoved) {
+            this.newTileNum = Math.random() < 0.85 ? 1 : 2;
             this._checkGameOver();
             this.animation.doMove();
         }
@@ -268,8 +272,7 @@ export default class FieldManager {
     _addNewTile() {
         let newTileIndex = Phaser.Utils.Array.GetRandom(this.emptyTiles);
         let newTile = this.array[newTileIndex.row][newTileIndex.col];
-        var value = Math.random() < 0.85 ? 1 : 2;
-        newTile.num = value;
+        newTile.num = this.newTileNum;
         newTile.setFrame(newTile.num - 1);
         newTile.visible = false;
         if (this.canAnimate) {

@@ -32,8 +32,8 @@ function resize() {
     input.style.top = (canvas.clientHeight * 0.941) + "px";
     input.style.left = (canvas.clientWidth * 0.575) + "px";
     input.style.height = (canvas.clientHeight * 0.031) + "px";
-    input.style.width = (canvas.clientWidth * 0.30) + "px";
-    input.style.fontSize = (canvas.clientHeight * 0.031) + "px";
+    input.style.width = (canvas.clientWidth * 0.296) + "px";
+    input.style.fontSize = (canvas.clientHeight * 0.03) + "px";
 }
 
 var game;
