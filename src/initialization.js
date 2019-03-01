@@ -15,7 +15,8 @@ const config = {
 };
 
 function resize() {
-    var canvas = document.querySelector("canvas");
+    let canvas = document.querySelector("canvas");
+    let input = document.querySelector("input");
     var windowWidth = window.innerWidth;
     var windowHeight = window.innerHeight;
     var windowRatio = windowWidth / windowHeight;
