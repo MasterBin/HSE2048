@@ -10,7 +10,6 @@ const config = {
     type: Phaser.CANVAS,
     backgroundColor: 0x86bcc5,
     physics: Phaser.ARCADE,
-    parent: "HSE2048",
     canvas: document.getElementById('hse2048_canvas'),
     scene: [ PreloadScene, MainScene, RatingTableScene, LoseScene, WinScene ]
 };

@@ -34,8 +34,7 @@ export default class MainScene extends Phaser.Scene {
     // TODO: вместо bestscore - наибольшее значение ячейки
     loseHandler(bscore) {
         this.loadSceneOver('LoseScene');
-        //TODO: nickname
-        this.backend.sendBestScore("LOL", bscore);
+        this.backend.sendBestScore(this.UI.inputField.getName(), bscore);
     }
 
     create() {
@@ -50,22 +49,5 @@ export default class MainScene extends Phaser.Scene {
         this.events.on('onGameWin', this.winHandler, this);
 
         this.fieldManager.start();
-
-
-
-
-        // var lol = document.getElementById("textinput");
-        // var wid = 380 + "px";
-        // lol.style.width = wid;
-        // lol.style.height = "50px";
-        // lol.style.top = "1820px";
-        // lol.style.left = "725px";
-        // lol.style.border = "0px";
-        // lol.style.fontSize = "40px";
-        // lol.style.background = "#86bcc5";
-
-
-        // // lol.style.zIndex = 20;
-        // console.log(lol);
     }
 }

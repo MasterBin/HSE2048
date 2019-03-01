@@ -31,16 +31,25 @@ export default class UI {
     constructor (mainScene) {
         this.mainScene = mainScene;
         this.inputField = new InputField(this.mainScene);
-        
+         
         this._init_Buttons();
         this._init_Scores();
+
+        this.inputField = new InputField(this.mainScene);
+        this.mainScene.events.on('onNameRecived', this._nameRecived, this);
+        this.mainScene.backend.reciveName();
+    }
+
+    _nameRecived(name) {
+        this.inputField.setText(name);
     }
 
     _init_Buttons() {
 
+        // RANDOM NAME BUTTON
         this.randomNameButton = new Button('randomButton', 939, 1456, this.mainScene);
         this.randomNameButton.Up = () => {
-              this.inputField.setRandomName();
+            this.mainScene.backend.reciveName();
         };
 
         // RATING BUTTON
