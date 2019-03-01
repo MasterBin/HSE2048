@@ -2,7 +2,7 @@ import MainScene from './scenes/MainScene.js';
 import PreloadScene from './scenes/PreloadScene.js';
 import RatingTableScene from './scenes/RatingTableScene.js';
 import LoseScene from './scenes/LoseScene.js';
-import WinScene from './scenes/winScene.js';
+import WinScene from './scenes/WinScene.js';
 
 const config = {
     width: 1000,
