@@ -30,7 +30,7 @@ const shareConfig = {
 export default class UI {
     constructor (mainScene) {
         this.mainScene = mainScene;
-        this.inputField = new InputField(this.mainScene);
+
          
         this._init_Buttons();
         this._init_Scores();
