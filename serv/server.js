@@ -2,14 +2,14 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 
-const PORT = process.env.PORT || 8000;
-
-const index = "/rating";
-const ratingPath = "./rating.json";
+const ratingIndex = "/rating";
+const ratingPath = "data/rating.json";
+const namesIndex = "/name";
+const namesPath = "data/names.json";
 
 app.use(express.json());
 
-//load index.html
+//load ratingIndex.html
 app.use(express.static('../'));
 
 // Rating object
@@ -20,35 +20,54 @@ var g_rating = {
 };
 var indexHtml;
 
+
 /* 
- *  Read current raiting 
+ *  Read nicknames from file
+*/
+fs.readFile(namesPath, 'utf8', (err, content) => {
+    if (err)
+        log("Can't load " + namesPath);
+    g_names = JSON.parse(content);
+});
+
+/*
+ * GET NAME REQUEST
+*/
+app.get(namesIndex, (req, res) => {
+    log("[GET NAME REQUEST] {" + req.hostname + "}");
+    res.send(g_names[Math.floor(Math.random()*g_names.length)]);
+});
+
+
+/* 
+ *  Read current raiting from file
 */
 fs.readFile(ratingPath, 'utf8', (err, content) => {
     if (err)
-        console.log("Can't load " + ratingPath);
-    g_rating.table = JSON.parse(content);  //TODO try to save that
+        log("Can't load " + ratingPath);
+    g_rating.table = JSON.parse(content);  
 });
 
 /* 
- *  GET REQUEST
+ *  GET RATING REQUEST
 */
-app.get(index, (req, res) => {
-    console.log("[GET REQUEST] {" + req.hostname + "}");
-    res.send(JSON.stringify(g_rating.table));
+app.get(ratingIndex, (req, res) => {
+    log("[GET RATING REQUEST] {" + req.hostname + "}");
+    res.send(JSON.stringify( g_rating.table));
 });
 
 /* 
- *  PUT REQUEST
+ *  PUT RATING REQUEST
 */
-app.put(index, (req, res) => {
+app.put(ratingIndex, (req, res) => {
 
     if (!checkInPUT(req)) {
         res.status(400).send("Score and name are required and should be really yours!");
-        console.log(JSON.stringify(req.body));
+        log(JSON.stringify(req.body));
         return;
     }
 
-    console.log("[PUT REQUEST]: " + JSON.stringify(req.body));
+    log("[PUT REQUEST]: " + JSON.stringify(req.body));
 
     const rating_obj = {
         "name": req.body.name,
@@ -81,7 +100,7 @@ app.put(index, (req, res) => {
 function writeToDisk() {
     fs.writeFile(ratingPath, JSON.stringify(g_rating.table), (err) => {
         if (err)
-            console.log("Can't load " + ratingPath);
+            log("Can't load " + ratingPath);
     });
 }
 
@@ -110,5 +129,13 @@ app.use((err, req, res, next) => {
     //next();
 });
 
+function log(str) {
+    console.log("["+currentTime()+"]"+str);
+}
+
+function currentTime() {
+    let date = new Date();
+    return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+}
 /// exec server
-app.listen(PORT, () => console.log("Listening on 8000"));
+app.listen(8000, () => log("Listening on 8000"));

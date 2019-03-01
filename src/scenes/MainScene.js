@@ -1,7 +1,6 @@
 import FieldManager from "../FieldManager.js";
 import KeyHandler from "../KeyHandler.js";
 import BackEnd from "../BackEnd.js";
-import Button from "../Button.js";
 import LocalStorageManager from "../LocalStorageManager.js";
 import UI from "../UI.js";
 
@@ -24,20 +23,18 @@ export default class MainScene extends Phaser.Scene {
                 this.scene.wake(sceneName);
 
         this.scene.pause('MainScene');
-        //this.fieldManager.pause();
     }
 
     winHandler(bscore) {
         this.loadSceneOver('WinScene');
         //TODO: сделать что-то с этим ужасом
-        this.backend.sendBestScore("LOL", this.fieldManager.score);
+        this.backend.sendBestScore(this.ui.inputField.getText(), this.fieldManager.score);
     }
 
     // TODO: вместо bestscore - наибольшее значение ячейки
     loseHandler(bscore) {
         this.loadSceneOver('LoseScene');
-        //TODO: nickname
-        this.backend.sendBestScore("LOL", bscore);
+        this.backend.sendBestScore(this.ui.inputField.getText(), bscore);
     }
 
     create() {

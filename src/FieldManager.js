@@ -112,6 +112,9 @@ export default class FieldManager {
                 }
             }
         }
+
+        //TODO Проверить появление 4 
+        
         this.state = gameState.LOSE;
         this.paused = true;
     }
