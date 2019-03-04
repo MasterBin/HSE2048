@@ -46,7 +46,7 @@ export default class LocalStorageManager {
         }
     }
 
-    putToStarage(object, name){ // name должно быть из localStorageKey
+    putToStorage(object, name){ // name должно быть из localStorageKey
         var objectJSON = JSON.stringify(object);
         this.storage.setItem(name, objectJSON);
     }

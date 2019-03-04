@@ -33,7 +33,6 @@ export default class FieldManager {
     start() {
         if (!this.started) {
 
-            this.mainScene.ui.init_bestScore();
             this.started = true;
             this._init();
             this._addNewTile();
@@ -199,7 +198,7 @@ export default class FieldManager {
                     if(this.score > this.bestScore) {
                         this.bestScore = this.score;
                         this.mainScene.ui.bestScoreChanged(this.bestScore);
-                        this.mainScene.storage.putToStarage(this.bestScore, "bestScore")
+                        this.mainScene.storage.putToStorage(this.bestScore, "bestScore")
                     }
 
                     if (this.array[curRow + shiftRow][curCol + shiftCol].num == 11 && this.notWin) { //WIN

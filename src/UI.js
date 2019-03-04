@@ -28,16 +28,25 @@ const shareConfig = {
 }
 
 export default class UI {
-    constructor (mainScene) {
+    constructor(mainScene) {
         this.mainScene = mainScene;
 
-         
         this._init_Buttons();
         this._init_Scores();
+        this.init_bestScore();
 
         this.inputField = new InputField(this.mainScene);
         this.mainScene.events.on('onNameRecived', this._nameRecived, this);
-        this.mainScene.backend.reciveName();
+
+        // взятие ника из кеша браузера
+        if (this.mainScene.storage.localStorageSupported()) {
+            let nickname = this.mainScene.storage.getFromStorage('name');
+            if (nickname != null)
+                this.inputField.setText(nickname);
+            else
+                this.mainScene.backend.reciveName();
+        } else
+            this.mainScene.backend.reciveName();
     }
 
     _nameRecived(name) {
@@ -75,7 +84,7 @@ export default class UI {
             // url += '&p[images][0]=' + encodeURIComponent(pimg);
             window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
         };
-        
+
         // VK BUTTON
         this.vkButton = new Button('vkButton', 64 + 100, 1455, this.mainScene);
         this.vkButton.Up = () => {
@@ -114,7 +123,7 @@ export default class UI {
         this.mainScene.events.on('onBestScoreChanged', this.bestScoreChanged, this);
     }
 
-    init_bestScore () {
+    init_bestScore() {
         let bscore = null;
         bscore = this.mainScene.storage.getFromStorage("bestScore");
         this.mainScene.fieldManager.bestScore = (bscore == null ? 0 : bscore);
