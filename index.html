@@ -11,13 +11,24 @@
 			padding: 0;
 		}
 
+		.main{
+			/* position: absolute;
+			top: 50%;
+        	left: 50%;
+        	margin-right: -50%;
+        	transform: translate(-50%, -50%); */
+			/* margin: 0 auto; */
+		}
+
 		#textinput {
 			z-index: 2;
-			position: absolute;
+			/* position: absolute; */
+			position: fixed;
 			border: 0px;
-			background: #E3F2FD;
+			background: rgba(227, 242, 253, 0);
 			font-family: Arial, Helvetica, sans-serif;
 			color: #00A3F7;
+			outline: none;
 		}
 
 		#hse2048_canvas {
@@ -28,9 +39,13 @@
 </head>
 
 <body style="background-color: #86bcc5">
+	
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
 	<script type="text/javascript" src="lib/phaser.js"></script>
 	<script type="module" src="src/initialization.js"></script>
-	<script type="module" src="lib/canvasInput.min.js"></script>
+	<!-- <div class="main">
+	</div> -->
 	<input type="text" id="textinput" placeholder="nickname..." maxLength = 10>
 	<canvas id="hse2048_canvas"></canvas>
 	
