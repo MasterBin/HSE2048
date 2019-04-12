@@ -17,7 +17,7 @@ Run it using Node.js
 ```sh
 $ node server.js
 ```
-Then, go to your browser and type this adress
+Then go to your browser and type this adress
 ```
 localhost:8000
 ```
