@@ -1,7 +1,7 @@
 # HSE2048
 
 
-HSE2048 is a 2048 web game that uses [Phaser](https://phaser.io) framework.
+HSE2048 is a 2048 web game based on [Phaser](https://phaser.io) framework.
 
 ![image](https://user-images.githubusercontent.com/30437684/56044770-9330fb00-5d48-11e9-8f7f-1bc4a32e0ca3.png)
 
